@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculateur Keycloak as a Service — Clever Cloud</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ===== DESIGN TOKENS — Clever Cloud brand ===== */
+  :root {
+    --navy: #1F2240;
+    --navy-soft: #2A2D52;
+    --navy-deep: #0F1031;
+    --bg: #F7F7F7;
+    --bg-card: #FFFFFF;
+    --border: #E8E8EC;
+    --border-strong: #D5D5DC;
+    --muted: #6B6E85;
+    --muted-soft: #9CA0B5;
+    --accent-from: #EE3354;
+    --accent-to: #FF8C7A;
+    --link: #5159D0;
+    --green: #22B573;
+    --green-soft: #F0F9F2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ===== TYPOGRAPHY ===== */
+  html, body {
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--navy);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-variant-numeric: tabular-nums;
+  }
+  .num-tabular { font-variant-numeric: tabular-nums; }
+
+  /* The signature CC gradient underline */
+  .underlined {
+    background-image: linear-gradient(90deg, var(--accent-from) 0%, var(--accent-to) 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 6px;
+    background-position: 0 92%;
+    padding-bottom: 2px;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-mark { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; }
+  .brand-mark svg { width: 100%; height: 100%; }
+  .brand-text {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    line-height: 1;
+  }
+  .brand-text .title {
+    font-weight: 800;
+    font-size: 19px;
+    color: var(--navy);
+    letter-spacing: -0.02em;
+  }
+  .brand-text .sep {
+    width: 1px;
+    height: 16px;
+    background: var(--border-strong);
+    align-self: center;
+  }
+  .brand-text .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: -0.005em;
+  }
+
+  /* ===== MODE TOGGLE — outlined navy ===== */
+  .mode-toggle {
+    display: flex;
+    gap: 4px;
+  }
+  .mode-toggle button {
+    background: transparent;
+    border: 1.5px solid var(--navy);
+    color: var(--navy);
+    padding: 10px 22px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: -0.005em;
+  }
+  .mode-toggle button:hover { background: var(--navy); color: white; }
+  .mode-toggle button.active {
+    background: var(--navy);
+    color: white;
+  }
+
+  /* ===== LAYOUT ===== */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 56px 40px 80px;
+  }
+  .hero {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--navy);
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .hero-title {
+    font-weight: 800;
+    font-size: 56px;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--navy);
+    margin-bottom: 18px;
+  }
+  .hero-subtitle {
+    font-size: 18px;
+    color: var(--muted);
+    font-weight: 400;
+    max-width: 580px;
+    margin: 0 auto;
+  }
+  @media (max-width: 720px) {
+    .hero-title { font-size: 38px; }
+    .hero-subtitle { font-size: 15px; }
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  @media (max-width: 980px) {
+    .layout { grid-template-columns: 1fr; gap: 32px; }
+    .container { padding: 32px 24px 60px; }
+    .hero { margin-bottom: 40px; }
+  }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 28px;
+    margin-bottom: 16px;
+  }
+  .card:last-child { margin-bottom: 0; }
+
+  .eyebrow {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+
+  /* ===== USERS DISPLAY ===== */
+  .users-display {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .users-display .num {
+    font-weight: 800;
+    font-size: 44px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--navy);
+  }
+  .users-display .lbl {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: var(--border);
+    outline: none;
+    margin: 12px 0 12px;
+    border-radius: 4px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    background: var(--navy);
+    cursor: pointer;
+    border: 4px solid var(--bg-card);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--navy);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    background: var(--navy);
+    cursor: pointer;
+    border: 4px solid var(--bg-card);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--navy);
+  }
+
+  /* ===== PRESETS ===== */
+  .presets {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-top: 12px;
+  }
+  .preset {
+    padding: 10px 4px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.12s;
+    text-align: center;
+    border-radius: 4px;
+  }
+  .preset:hover { border-color: var(--navy); color: var(--navy); background: white; }
+  .preset.active {
+    background: var(--navy);
+    color: white;
+    border-color: var(--navy);
+  }
+
+  .number-input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: right;
+    color: var(--navy);
+    margin-top: 12px;
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .number-input:focus {
+    outline: none;
+    border-color: var(--navy);
+    background: white;
+  }
+
+  /* ===== TIER SELECT ===== */
+  .tiers {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .tier {
+    padding: 18px 18px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    cursor: pointer;
+    transition: all 0.15s;
+    border-radius: 6px;
+    position: relative;
+  }
+  .tier:hover {
+    border-color: var(--navy-soft);
+    background: white;
+  }
+  .tier.active {
+    border-color: var(--navy);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(31, 34, 64, 0.08);
+  }
+  .tier.active::after {
+    content: '';
+    position: absolute;
+    top: 18px; right: 18px;
+    width: 14px;
+    height: 14px;
+    background: var(--navy);
+    border-radius: 50%;
+  }
+  .tier.active::before {
+    content: '';
+    position: absolute;
+    top: 24px; right: 22px;
+    width: 6px;
+    height: 3px;
+    border-bottom: 2px solid white;
+    border-left: 2px solid white;
+    transform: rotate(-45deg);
+    z-index: 1;
+  }
+  .tier-name {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--navy);
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+  .tier-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.45;
+    margin-bottom: 8px;
+  }
+  .tier-mult {
+    font-size: 11px;
+    color: var(--accent-from);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* ===== PRICE HERO ===== */
+  .price-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 36px 32px;
+    margin-bottom: 16px;
+  }
+  .price-eyebrow {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+  .price-main {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .price-value {
+    font-weight: 800;
+    font-size: 88px;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: var(--navy);
+    background-image: linear-gradient(90deg, var(--accent-from) 0%, var(--accent-to) 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 8px;
+    background-position: 0 100%;
+    padding-bottom: 4px;
+  }
+  .price-unit {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: -0.01em;
+  }
+  .price-annual {
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .price-annual .amount {
+    color: var(--navy);
+    font-weight: 700;
+  }
+  @media (max-width: 720px) {
+    .price-value { font-size: 60px; }
+  }
+
+  /* ===== BREAKDOWN ===== */
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .breakdown-row:first-of-type { padding-top: 4px; }
+  .breakdown-row:last-of-type { border-bottom: none; }
+  .breakdown-label {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+    color: var(--navy);
+    font-weight: 500;
+  }
+  .breakdown-label .sublabel {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
+    font-weight: 400;
+  }
+  .breakdown-value {
+    flex-shrink: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    white-space: nowrap;
+  }
+  .breakdown-row.subtotal {
+    background: var(--bg);
+    margin: 4px -28px;
+    padding: 14px 28px;
+  }
+  .breakdown-row.subtotal .breakdown-label {
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  .breakdown-row.subtotal .breakdown-value {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .breakdown-row.total {
+    margin-top: 12px;
+    padding: 22px 0 0;
+    border-top: 2px solid var(--navy);
+    border-bottom: none;
+    align-items: baseline;
+  }
+  .breakdown-row.total .breakdown-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-weight: 700;
+  }
+  .breakdown-row.total .breakdown-label .sublabel {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 500;
+    margin-top: 6px;
+  }
+  .breakdown-row.total .breakdown-value {
+    font-weight: 800;
+    font-size: 32px;
+    color: var(--navy);
+    letter-spacing: -0.02em;
+  }
+
+  /* ===== INCLUDED ===== */
+  .included {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .included-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+  }
+  .included-item .mark {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(135deg, var(--accent-from), var(--accent-to));
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+    font-size: 12px;
+    font-weight: 800;
+  }
+  .included-item .label-strong { font-weight: 700; color: var(--navy); }
+  .included-item .label-light { color: var(--muted); font-size: 13px; }
+
+  /* ===== POI ===== */
+  .poi-card {
+    background: var(--green-soft);
+    border: 1px solid rgba(34, 181, 115, 0.25);
+    border-left: 4px solid var(--green);
+    padding: 28px;
+    margin-bottom: 16px;
+  }
+  .poi-content { display: flex; gap: 22px; align-items: flex-start; }
+  .poi-logo { flex-shrink: 0; width: 56px; height: 56px; }
+  .poi-logo svg { width: 100%; height: 100%; border-radius: 10px; }
+  .poi-body { flex: 1; }
+  .poi-eyebrow {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--green);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .poi-title {
+    font-weight: 800;
+    font-size: 22px;
+    color: var(--navy);
+    line-height: 1.1;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+  .poi-desc {
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.55;
+    margin-bottom: 16px;
+  }
+  .poi-services {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .poi-service {
+    font-size: 13px;
+    color: var(--navy);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .poi-service .dot {
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    margin-top: 8px;
+  }
+  .poi-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: 16px;
+    border-top: 1px solid rgba(34, 181, 115, 0.2);
+    font-size: 12px;
+    color: var(--muted);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .poi-footer .poi-contact strong { color: var(--navy); font-weight: 700; }
+  .poi-footer .poi-note { font-style: italic; color: var(--muted-soft); }
+
+  /* ===== ACTIONS ===== */
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+  }
+  .btn {
+    flex: 1;
+    padding: 14px 22px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 1.5px solid;
+    letter-spacing: -0.005em;
+    text-align: center;
+    border-radius: 4px;
+  }
+  .btn-primary {
+    background: var(--navy);
+    color: white;
+    border-color: var(--navy);
+  }
+  .btn-primary:hover {
+    background: var(--navy-deep);
+    border-color: var(--navy-deep);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--navy);
+    border-color: var(--navy);
+  }
+  .btn-secondary:hover { background: var(--navy); color: white; }
+
+  /* ===== QUOTE INFO form ===== */
+  .quote-info {
+    display: none;
+    background: var(--bg-card);
+    padding: 24px;
+    margin-bottom: 28px;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--navy);
+  }
+  body.quote-mode .quote-info { display: block; }
+  .quote-info-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--navy);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .quote-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .quote-form label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .quote-form input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--navy);
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .quote-form input:focus {
+    outline: none;
+    border-color: var(--navy);
+    background: white;
+  }
+  .select-input {
+    width: 100%;
+    padding: 11px 38px 11px 14px;
+    border: 1px solid var(--border);
+    background-color: var(--bg);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231F2240' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    border-radius: 4px;
+    transition: all 0.15s;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+  .select-input:focus {
+    outline: none;
+    border-color: var(--navy);
+    background-color: white;
+  }
+  .select-input:hover { border-color: var(--navy-soft); }
+
+  /* ===== PRINT (DEVIS) ===== */
+  @media print {
+    @page { size: A4; margin: 14mm; }
+    body {
+      background: white;
+      font-size: 11pt;
+    }
+    .header, .mode-toggle, .actions, .presets, .quote-info,
+    .hero, input[type="range"], .number-input { display: none !important; }
+
+    /* Hide the input column entirely */
+    .layout > div:first-child { display: none !important; }
+
+    .container { max-width: 100%; padding: 0; }
+    .layout { display: block; }
+
+    .print-only { display: block !important; }
+
+    .card {
+      border: none;
+      padding: 0;
+      margin-bottom: 18px;
+      page-break-inside: avoid;
+    }
+    .price-card {
+      background: white !important;
+      color: var(--navy) !important;
+      border: 2px solid var(--navy);
+      padding: 24px;
+      page-break-inside: avoid;
+    }
+    .price-value {
+      font-size: 64px !important;
+      color: var(--navy) !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .breakdown-row.subtotal {
+      background: var(--bg) !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .breakdown-row.total .breakdown-value { font-size: 26px; }
+    .poi-card {
+      background: var(--green-soft) !important;
+      border-left: 4px solid var(--green) !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      padding: 18px;
+    }
+    .poi-eyebrow, .poi-service .dot, .included-item .mark {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+
+  /* Print-only blocks hidden by default */
+  .print-only { display: none; }
+
+  /* ===== PRINT HEADER (devis) ===== */
+  .print-header {
+    border-bottom: 2px solid var(--navy);
+    padding-bottom: 18px;
+    margin-bottom: 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .print-header-left { display: flex; align-items: center; gap: 14px; }
+  .print-logo { width: 56px; height: 56px; }
+  .print-logo svg { width: 100%; height: 100%; }
+  .print-title-block .name {
+    font-weight: 800;
+    font-size: 22px;
+    color: var(--navy);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .print-title-block .sub {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+  .print-meta {
+    text-align: right;
+    font-size: 11px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+  .print-meta strong {
+    color: var(--navy);
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+  }
+  .print-meta .ref { color: var(--navy); font-weight: 600; }
+
+  .print-customer {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 22px;
+    padding: 18px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+  }
+  .print-customer > div { flex: 1; }
+  .print-customer h4 {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .print-customer .name { font-weight: 700; font-size: 14px; color: var(--navy); }
+  .print-customer .detail { font-size: 13px; color: var(--navy); margin-top: 2px; }
+
+  .print-summary {
+    display: flex;
+    margin-bottom: 28px;
+    border: 1px solid var(--border);
+  }
+  .print-summary-item {
+    flex: 1;
+    padding: 16px 18px;
+    border-right: 1px solid var(--border);
+  }
+  .print-summary-item:nth-child(2) { flex: 1.2; }
+  .print-summary-item:last-child { border-right: none; }
+  .print-summary-item h4 {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .print-summary-item .value {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--navy);
+    margin-bottom: 3px;
+    letter-spacing: -0.01em;
+  }
+  .print-summary-item .sub {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .print-footer {
+    margin-top: 30px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-size: 10.5px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .print-footer strong { color: var(--navy); font-weight: 700; }
+</style></style>
+</head>
+<body>
+
+<header class="header">
+  <div class="brand">
+    <div class="brand-mark">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 115 115">
+        <g fill="none" fill-rule="evenodd" transform="translate(8)">
+          <polygon fill="#AB2B4A" points="99.998 28.748 99.998 86.248 89.297 72.499 83.335 57.5 83.331 57.5 88.993 42.291"/>
+          <polygon fill="#E87A68" points=".004 28.748 .004 86.248 9.464 72.915 16.667 57.5 16.671 57.5 9.348 42.875"/>
+          <polygon fill="#D74D4E" points="83.331 57.5 51.816 59.492 16.667 57.5 31.335 28.748 50.001 0 70.297 31.564"/>
+          <polygon fill="#BD3246" points="99.998 28.748 83.331 57.5 50.001 0"/>
+          <polygon fill="#F19175" points="50.001 0 16.667 57.5 0 28.748"/>
+          <polygon fill="#CF3942" points="83.331 57.5 71.94 82.328 50.001 115 27.424 81.23 16.667 57.5"/>
+          <polygon fill="#E0625B" points="50.001 115 0 86.248 16.667 57.5"/>
+          <polygon fill="#9A244F" points="49.998 115 99.998 86.248 83.331 57.5"/>
+        </g>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <span class="title">clever cloud</span>
+      <span class="sep"></span>
+      <span class="subtitle">Keycloak as a Service</span>
+    </div>
+  </div>
+  <div class="mode-toggle">
+    <button id="mode-sales" class="active">Mode commercial</button>
+    <button id="mode-quote">Devis client</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-eyebrow">Add on · Calculateur</div>
+    <h1 class="hero-title">Estimez votre <span class="underlined">tarif Keycloak</span></h1>
+    <p class="hero-subtitle">IAM managé, hébergement souverain français, scalabilité automatique. Tarif transparent à l'usage actif.</p>
+  </div>
+
+  <!-- Quote info form (only visible in quote mode) -->
+  <div class="quote-info">
+    <div class="quote-info-title">Informations client</div>
+    <div class="quote-form">
+      <div style="grid-column: 1 / -1;">
+        <label>Commercial émetteur</label>
+        <select id="customer-rep" class="select-input">
+          <!-- populated by JS from SALES_TEAM list -->
+        </select>
+      </div>
+      <div>
+        <label>Société</label>
+        <input type="text" id="customer-name" placeholder="ex. HelloAsso">
+      </div>
+      <div>
+        <label>Interlocuteur</label>
+        <input type="text" id="customer-contact" placeholder="ex. Nicolas Dupont — CTO">
+      </div>
+      <div>
+        <label>Email</label>
+        <input type="email" id="customer-email" placeholder="contact@entreprise.fr">
+      </div>
+      <div>
+        <label>Référence devis</label>
+        <input type="text" id="quote-ref" placeholder="auto-généré" readonly>
+      </div>
+    </div>
+  </div>
+
+  <!-- Print-only header (quote view) -->
+  <div class="print-only">
+    <div class="print-header">
+      <div class="print-header-left">
+        <div class="print-logo">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 115 115">
+            <g fill="none" fill-rule="evenodd" transform="translate(8)">
+              <polygon fill="#AB2B4A" points="99.998 28.748 99.998 86.248 89.297 72.499 83.335 57.5 83.331 57.5 88.993 42.291"/>
+              <polygon fill="#E87A68" points=".004 28.748 .004 86.248 9.464 72.915 16.667 57.5 16.671 57.5 9.348 42.875"/>
+              <polygon fill="#D74D4E" points="83.331 57.5 51.816 59.492 16.667 57.5 31.335 28.748 50.001 0 70.297 31.564"/>
+              <polygon fill="#BD3246" points="99.998 28.748 83.331 57.5 50.001 0"/>
+              <polygon fill="#F19175" points="50.001 0 16.667 57.5 0 28.748"/>
+              <polygon fill="#CF3942" points="83.331 57.5 71.94 82.328 50.001 115 27.424 81.23 16.667 57.5"/>
+              <polygon fill="#E0625B" points="50.001 115 0 86.248 16.667 57.5"/>
+              <polygon fill="#9A244F" points="49.998 115 99.998 86.248 83.331 57.5"/>
+            </g>
+          </svg>
+        </div>
+        <div class="print-title-block">
+          <div class="name">Keycloak as a Service</div>
+          <div class="sub">Clever Cloud × Please Open It</div>
+        </div>
+      </div>
+      <div class="print-meta">
+        <div><strong>DEVIS</strong></div>
+        <div>Réf. <span class="ref" id="print-ref">—</span></div>
+        <div id="print-date">—</div>
+      </div>
+    </div>
+    <div class="print-customer">
+      <div>
+        <h4>Émetteur</h4>
+        <div class="name">Clever Cloud SAS</div>
+        <div class="detail">4 rue Voltaire, 44000 Nantes</div>
+        <div class="detail">commercial@clever-cloud.com</div>
+      </div>
+      <div>
+        <h4>Destinataire</h4>
+        <div class="name" id="print-customer-name">—</div>
+        <div class="detail" id="print-customer-contact">—</div>
+        <div class="detail" id="print-customer-email">—</div>
+      </div>
+    </div>
+
+    <div class="print-summary">
+      <div class="print-summary-item">
+        <h4>Service</h4>
+        <div class="value">Keycloak as a Service</div>
+        <div class="sub">IAM managé — Cloud souverain France</div>
+      </div>
+      <div class="print-summary-item">
+        <h4>Volume cible</h4>
+        <div class="value"><span id="print-users">100 000</span> utilisateurs actifs / mois</div>
+        <div class="sub">Tarification dégressive par tranche</div>
+      </div>
+      <div class="print-summary-item">
+        <h4>Niveau</h4>
+        <div class="value" id="print-tier">Standard</div>
+        <div class="sub" id="print-tier-desc">Support 9h-18h, jours ouvrés</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <!-- LEFT: INPUTS -->
+    <div>
+      <div class="card">
+        <div class="eyebrow">Configuration · Volume</div>
+
+        <div class="users-display">
+          <span class="num" id="users-display">100&nbsp;000</span>
+          <span class="lbl">utilisateurs actifs<br>par mois</span>
+        </div>
+        <input type="range" id="users-slider" min="0" max="2000000" step="1000" value="100000">
+        <div class="presets">
+          <div class="preset" data-val="100">100</div>
+          <div class="preset" data-val="500">500</div>
+          <div class="preset" data-val="1000">1k</div>
+          <div class="preset" data-val="10000">10k</div>
+          <div class="preset" data-val="100000">100k</div>
+          <div class="preset" data-val="500000">500k</div>
+          <div class="preset" data-val="2000000">2M</div>
+        </div>
+        <input type="number" id="users-input" class="number-input" value="100000" min="0">
+      </div>
+
+      <div class="card">
+        <div class="eyebrow">Niveau de service</div>
+        <div class="tiers">
+          <div class="tier active" data-tier="standard" data-mult="1">
+            <div class="tier-name">Standard</div>
+            <div class="tier-desc">Support 9h–18h, jours ouvrés</div>
+            <div class="tier-mult">Pas de surcoût</div>
+          </div>
+          <div class="tier" data-tier="premium" data-mult="1.8">
+            <div class="tier-name">Premium 24/7</div>
+            <div class="tier-desc">Astreinte 24/7, SLA renforcé</div>
+            <div class="tier-mult">Coefficient ×1.8</div>
+          </div>
+          <div class="tier" data-tier="hds" data-mult="1.4">
+            <div class="tier-name">HDS</div>
+            <div class="tier-desc">Données de santé — 6 niveaux</div>
+            <div class="tier-mult">Coefficient ×1.4</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="eyebrow">Ce qui est inclus</div>
+        <div class="included">
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong">Keycloak vanilla</span><br><span class="label-light">0 fork, réversibilité totale</span></span></div>
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong">PostgreSQL managé</span><br><span class="label-light">Backups automatiques</span></span></div>
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong">SSO, MFA, SAML, OIDC</span><br><span class="label-light">Standards natifs complets</span></span></div>
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong">Monitoring Grafana</span><br><span class="label-light">Provisionné dès J1</span></span></div>
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong">Mises à jour 1 clic</span><br><span class="label-light">0 downtime</span></span></div>
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong">Plugins custom</span><br><span class="label-light">FS Bucket + GitLab CI</span></span></div>
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong">Auto-scaling</span><br><span class="label-light">Horizontal &amp; vertical</span></span></div>
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong">Hébergement Paris</span><br><span class="label-light">HDS — souveraineté FR</span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: OUTPUT -->
+    <div>
+      <div class="price-card">
+        <div class="price-eyebrow">Tarif mensuel HT</div>
+        <div class="price-main">
+          <span class="price-value" id="total-price">1&nbsp;665</span>
+          <span class="price-unit">€/mois</span>
+        </div>
+        <div class="price-annual">soit <span class="amount" id="annual-price">19&nbsp;980&nbsp;€</span> par an HT</div>
+      </div>
+
+      <div class="card">
+        <div class="eyebrow">Détail du tarif</div>
+        <div class="breakdown">
+          <div class="breakdown-row">
+            <div class="breakdown-label">
+              Licence Keycloak
+              <div class="sublabel" id="license-detail">Tarification dégressive par tranche</div>
+            </div>
+            <div class="breakdown-value"><span id="license-price">1&nbsp;545</span>&nbsp;€</div>
+          </div>
+          <div class="breakdown-row">
+            <div class="breakdown-label">
+              Runtime Java
+              <div class="sublabel" id="vm-detail">VM Java plan M</div>
+            </div>
+            <div class="breakdown-value"><span id="vm-price">76</span>&nbsp;€</div>
+          </div>
+          <div class="breakdown-row">
+            <div class="breakdown-label">
+              Base PostgreSQL managée
+              <div class="sublabel" id="db-detail">Plan S-medium</div>
+            </div>
+            <div class="breakdown-value"><span id="db-price">44</span>&nbsp;€</div>
+          </div>
+          <div class="breakdown-row subtotal" id="subtotal-row" style="display:none;">
+            <div class="breakdown-label">Sous-total service</div>
+            <div class="breakdown-value"><span id="subtotal-price">0</span>&nbsp;€</div>
+          </div>
+          <div class="breakdown-row" id="multiplier-row" style="display:none;">
+            <div class="breakdown-label">
+              <span id="mult-label">Coefficient ×1.4 (HDS)</span>
+              <div class="sublabel" id="mult-detail">Surcoût sur licence + infrastructure</div>
+            </div>
+            <div class="breakdown-value">+<span id="mult-price">0</span>&nbsp;€</div>
+          </div>
+          <div class="breakdown-row" id="flat-row" style="display:none;">
+            <div class="breakdown-label">
+              <span id="flat-label">Forfait</span>
+              <div class="sublabel" id="flat-detail">Montant fixe mensuel</div>
+            </div>
+            <div class="breakdown-value">+<span id="flat-price">0</span>&nbsp;€</div>
+          </div>
+          <div class="breakdown-row total">
+            <div class="breakdown-label">
+              Total mensuel HT
+              <div class="sublabel" id="total-detail">Standard — sans engagement</div>
+            </div>
+            <div class="breakdown-value"><span id="total-price-2">1&nbsp;665</span>&nbsp;€</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="poi-card">
+        <div class="poi-content">
+          <div class="poi-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46">
+              <rect width="283.46" height="283.46" rx="22.68" fill="#22b573"/>
+              <path fill="#fff" d="M222.46,46,117.39,151a48.21,48.21,0,1,0,15,15l61-61,9,9a8.51,8.51,0,0,0,12,0l4-4a8.5,8.5,0,0,0,0-12l-9-9L237.49,61a8.51,8.51,0,0,0,0-12l-3-3A8.5,8.5,0,0,0,222.46,46ZM112.72,212.84a29.76,29.76,0,1,1,0-42.09A29.77,29.77,0,0,1,112.72,212.84Z"/>
+            </svg>
+          </div>
+          <div class="poi-body">
+            <div class="poi-eyebrow">Option · Please Open It</div>
+            <div class="poi-title">Expert Keycloak depuis 7 ans</div>
+            <div class="poi-desc">Disponible pour vos besoins de configuration spécifique, développement de modules sur-mesure, migration depuis un autre IAM, ou accompagnement dans la durée.</div>
+            <div class="poi-services">
+              <div class="poi-service"><span class="dot"></span>Workshop de cadrage (1 à 2 jours)</div>
+              <div class="poi-service"><span class="dot"></span>Développement de plugins sur-mesure</div>
+              <div class="poi-service"><span class="dot"></span>Support et accompagnement au ticket</div>
+            </div>
+            <div class="poi-footer">
+              <span class="poi-contact">Contact direct&nbsp;: <strong>contact@please-open.it</strong></span>
+              <span class="poi-note">Facturation séparée — sur devis</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-secondary" id="btn-reset">Réinitialiser</button>
+        <button class="btn btn-primary" id="btn-print">Imprimer / Exporter PDF</button>
+      </div>
+
+    </div>
+  </div>  <!-- Print-only footer -->
+  <div class="print-only">
+    <div class="print-footer">
+      <strong>Conditions :</strong> Devis valable 30 jours à compter de la date d'émission. Tarif mensuel HT, hors TVA 20%. Engagement sans durée minimale — résiliation à tout moment. Réversibilité totale garantie (export standard Keycloak). Hébergement en France métropolitaine. Données conformes RGPD.
+      <br><br>
+      <strong>Prochaines étapes :</strong> validation devis → mise en service sous 24h → workshop de cadrage avec Please Open It (1 à 2 jours, sur option).
+      <br><br>
+      <strong>Contact commercial :</strong> <span id="print-rep">Florent Perreux — Directeur Commercial Clever Cloud — florent.perreux@clever-cloud.com</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ============================================================
+  // ÉQUIPE COMMERCIALE — éditez cette liste pour ajouter/retirer
+  // des commerciaux. Le premier de la liste est sélectionné par défaut.
+  //
+  // ⚠️  À VÉRIFIER avant utilisation client :
+  //    - Emails générés au format prenom.nom@clever-cloud.com
+  //    - Titres par défaut "Direction Commerciale" (à affiner)
+  //    - Orthographe & diacritiques selon le référentiel RH
+  // ============================================================
+  const SALES_TEAM = [
+    // Florent en premier = sélection par défaut
+    { name: 'Florent Perreux',     title: 'Directeur Commercial',  email: 'florent.perreux@clever-cloud.com' },
+    // Reste de l'équipe par ordre alphabétique
+    { name: 'Victor Ballu',        title: 'Direction Commerciale', email: 'victor.ballu@clever-cloud.com' },
+    { name: 'Baptiste Bockler',    title: 'Direction Commerciale', email: 'baptiste.bockler@clever-cloud.com' },
+    { name: 'Fabrice Bonneau',     title: 'Direction Commerciale', email: 'fabrice.bonneau@clever-cloud.com' },
+    { name: 'Sebastien Brunat',    title: 'Direction Commerciale', email: 'sebastien.brunat@clever-cloud.com' },
+    { name: 'Julia Buchner',       title: 'Direction Commerciale', email: 'julia.buchner@clever-cloud.com' },
+    { name: 'Ismael Cisse',        title: 'Direction Commerciale', email: 'ismael.cisse@clever-cloud.com' },
+    { name: 'Cécile Guerin',       title: 'Account Manager',       email: 'cecile.guerin@clever-cloud.com' },
+    { name: 'Mathilde Maenhout',   title: 'Direction Commerciale', email: 'mathilde.maenhout@clever-cloud.com' },
+    { name: 'Bryan Marcelo Motta', title: 'Direction Commerciale', email: 'bryan.marcelo-motta@clever-cloud.com' },
+    { name: 'Laurent Naitza',      title: 'Direction Commerciale', email: 'laurent.naitza@clever-cloud.com' },
+    { name: 'Loic Piron',          title: 'Direction Commerciale', email: 'loic.piron@clever-cloud.com' },
+    { name: 'Loic Tosser',         title: 'Direction Commerciale', email: 'loic.tosser@clever-cloud.com' },
+  ];
+
+  // ===== Pricing logic (Clever Cloud Keycloak as a Service) =====
+
+  // License — tiered active-user pricing
+  function calculateLicense(users) {
+    if (users <= 100) return 0;
+    let total = 0;
+    let remaining = users - 100;
+    // 101-10,000: 0.05€
+    const t1 = Math.min(remaining, 9900);
+    total += t1 * 0.05;
+    remaining -= t1;
+    if (remaining <= 0) return total;
+    // 10,001-50,000: 0.02€
+    const t2 = Math.min(remaining, 40000);
+    total += t2 * 0.02;
+    remaining -= t2;
+    if (remaining <= 0) return total;
+    // 50,001-250,000: 0.005€
+    const t3 = Math.min(remaining, 200000);
+    total += t3 * 0.005;
+    remaining -= t3;
+    if (remaining <= 0) return total;
+    // 250,001+: 0.001€
+    total += remaining * 0.001;
+    return total;
+  }
+
+  // Infrastructure — Java VM + PostgreSQL
+  function calculateInfra(users) {
+    if (users <= 100) {
+      return { vm: 32, db: 5.25, vmLabel: 'VM Java plan S', dbLabel: 'PostgreSQL XXS-small' };
+    }
+    if (users <= 50000) {
+      return { vm: 32, db: 15, vmLabel: 'VM Java plan S', dbLabel: 'PostgreSQL XS-tiny' };
+    }
+    return { vm: 76, db: 44, vmLabel: 'VM Java plan M', dbLabel: 'PostgreSQL S-medium' };
+  }
+
+  // Service tiers — multipliers applied to (license + infrastructure)
+  // Source: Pricing MASTER Dec 22 2025 — Keycloak tab, rows 13-26 and 65-74
+  const TIERS = {
+    standard: { name: 'Standard',     desc: 'Support 9h-18h, jours ouvrés',          mult: 1.0 },
+    premium:  { name: 'Premium 24/7', desc: 'Astreinte 24/7, SLA renforcé',          mult: 1.8 },
+    hds:      { name: 'HDS',          desc: 'Hébergement données de santé 6 niveaux', mult: 1.4 }
+  };
+
+  // ===== State =====
+  let state = {
+    users: 100000,
+    tier: 'standard'
+  };
+
+  // ===== Formatting =====
+  function fmt(n) {
+    return Math.round(n).toLocaleString('fr-FR');
+  }
+
+  // ===== Render =====
+  function render() {
+    const u = state.users;
+    const tier = TIERS[state.tier];
+    const license = calculateLicense(u);
+    const infra = calculateInfra(u);
+    const serviceSubtotal = license + infra.vm + infra.db;
+    const multSurcharge = serviceSubtotal * (tier.mult - 1);
+    const total = serviceSubtotal * tier.mult;
+
+    // User display
+    document.getElementById('users-display').textContent = fmt(u);
+    document.getElementById('users-input').value = u;
+    document.getElementById('users-slider').value = u;
+
+    // Update presets
+    document.querySelectorAll('.preset').forEach(p => {
+      p.classList.toggle('active', parseInt(p.dataset.val) === u);
+    });
+
+    // Prices — main display
+    document.getElementById('total-price').textContent = fmt(total);
+    document.getElementById('total-price-2').textContent = fmt(total);
+    document.getElementById('annual-price').textContent = fmt(total * 12) + ' €';
+    document.getElementById('license-price').textContent = fmt(license);
+    document.getElementById('vm-price').textContent = fmt(infra.vm);
+    document.getElementById('db-price').textContent = fmt(infra.db);
+    document.getElementById('vm-detail').textContent = infra.vmLabel;
+    document.getElementById('db-detail').textContent = infra.dbLabel;
+
+    // Conditional rows (shown only for Premium / HDS)
+    const showExtras = tier.mult > 1;
+
+    document.getElementById('subtotal-row').style.display = showExtras ? 'flex' : 'none';
+    document.getElementById('subtotal-price').textContent = fmt(serviceSubtotal);
+
+    if (showExtras) {
+      document.getElementById('multiplier-row').style.display = 'flex';
+      document.getElementById('mult-price').textContent = fmt(multSurcharge);
+      document.getElementById('mult-label').textContent = `Coefficient ×${tier.mult} (${tier.name})`;
+      document.getElementById('mult-detail').textContent = 'Surcoût appliqué sur licence + infrastructure';
+    } else {
+      document.getElementById('multiplier-row').style.display = 'none';
+    }
+
+    // No flat fee in Dec 22 pricing — always hidden
+    document.getElementById('flat-row').style.display = 'none';
+
+    // Total detail line
+    document.getElementById('total-detail').textContent = `${tier.name} — sans engagement`;
+
+    // License breakdown sublabel
+    let lDetail = 'Aucune licence — 100 premiers utilisateurs inclus';
+    if (u > 100) {
+      const tiers = [];
+      if (u > 100) tiers.push(`${fmt(Math.min(u-100,9900))} × 0,05€`);
+      if (u > 10000) tiers.push(`${fmt(Math.min(u-10000,40000))} × 0,02€`);
+      if (u > 50000) tiers.push(`${fmt(Math.min(u-50000,200000))} × 0,005€`);
+      if (u > 250000) tiers.push(`${fmt(u-250000)} × 0,001€`);
+      lDetail = 'Dégressif : ' + tiers.join(' + ');
+    }
+    document.getElementById('license-detail').textContent = lDetail;
+
+    // Print fields — keep in sync for Cmd+P direct
+    document.getElementById('print-users').textContent = fmt(u);
+    document.getElementById('print-tier').textContent = tier.name;
+    document.getElementById('print-tier-desc').textContent = tier.desc;
+    document.getElementById('print-date').textContent =
+      new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    // Slider step — adjust resolution by volume range
+    if (u < 10000) document.getElementById('users-slider').step = 500;
+    else if (u < 100000) document.getElementById('users-slider').step = 5000;
+    else document.getElementById('users-slider').step = 25000;
+  }
+
+  // ===== Event listeners =====
+  document.getElementById('users-slider').addEventListener('input', e => {
+    state.users = parseInt(e.target.value);
+    render();
+  });
+  document.getElementById('users-input').addEventListener('input', e => {
+    state.users = Math.max(0, parseInt(e.target.value) || 0);
+    render();
+  });
+  document.querySelectorAll('.preset').forEach(p => {
+    p.addEventListener('click', () => {
+      state.users = parseInt(p.dataset.val);
+      render();
+    });
+  });
+  document.querySelectorAll('.tier').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.tier').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      state.tier = t.dataset.tier;
+      render();
+    });
+  });
+
+  // Live-sync customer info to print fields
+  ['customer-name', 'customer-contact', 'customer-email', 'quote-ref'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', () => {
+      const map = {
+        'customer-name': 'print-customer-name',
+        'customer-contact': 'print-customer-contact',
+        'customer-email': 'print-customer-email',
+        'quote-ref': 'print-ref'
+      };
+      const target = document.getElementById(map[id]);
+      if (target) target.textContent = el.value || '—';
+    });
+  });
+
+  // ===== Sales rep dropdown — populated from SALES_TEAM =====
+  const repSelect = document.getElementById('customer-rep');
+  const printRep = document.getElementById('print-rep');
+  function repLine(rep) {
+    return `${rep.name} — ${rep.title} Clever Cloud — ${rep.email}`;
+  }
+  SALES_TEAM.forEach((rep, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${rep.name} — ${rep.title}`;
+    repSelect.appendChild(opt);
+  });
+  function updateRep() {
+    const rep = SALES_TEAM[parseInt(repSelect.value, 10) || 0];
+    if (rep && printRep) printRep.textContent = repLine(rep);
+  }
+  repSelect.addEventListener('change', updateRep);
+  updateRep(); // initial sync
+
+  // Mode toggle
+  document.getElementById('mode-sales').addEventListener('click', () => {
+    document.body.classList.remove('quote-mode');
+    document.getElementById('mode-sales').classList.add('active');
+    document.getElementById('mode-quote').classList.remove('active');
+  });
+  document.getElementById('mode-quote').addEventListener('click', () => {
+    document.body.classList.add('quote-mode');
+    document.getElementById('mode-quote').classList.add('active');
+    document.getElementById('mode-sales').classList.remove('active');
+    // Auto-generate reference if empty
+    const ref = document.getElementById('quote-ref');
+    if (!ref.value) {
+      const d = new Date();
+      const r = 'CC-KC-' + d.getFullYear() + (d.getMonth()+1).toString().padStart(2,'0') + d.getDate().toString().padStart(2,'0') + '-' + Math.floor(Math.random()*900+100);
+      ref.value = r;
+      document.getElementById('print-ref').textContent = r;
+    }
+  });
+
+  // Reset
+  document.getElementById('btn-reset').addEventListener('click', () => {
+    state = { users: 100000, tier: 'standard' };
+    document.querySelectorAll('.tier').forEach(x => x.classList.remove('active'));
+    document.querySelector('.tier[data-tier="standard"]').classList.add('active');
+    render();
+  });
+
+  // Print
+  document.getElementById('btn-print').addEventListener('click', () => {
+    if (!document.body.classList.contains('quote-mode')) {
+      document.getElementById('mode-quote').click();
+    }
+    // Populate print-specific fields
+    const today = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    document.getElementById('print-date').textContent = today;
+    document.getElementById('print-ref').textContent = document.getElementById('quote-ref').value || '—';
+    document.getElementById('print-customer-name').textContent = document.getElementById('customer-name').value || '[Société]';
+    document.getElementById('print-customer-contact').textContent = document.getElementById('customer-contact').value || '';
+    document.getElementById('print-customer-email').textContent = document.getElementById('customer-email').value || '';
+    setTimeout(() => window.print(), 100);
+  });
+
+  // Initial render
+  render();
+</script>
+</body>
+</html>
