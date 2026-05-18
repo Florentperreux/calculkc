@@ -1111,6 +1111,10 @@
         <input type="email" id="customer-email" placeholder="contact@entreprise.fr">
       </div>
       <div>
+        <label data-i18n="quote.phone">Téléphone</label>
+        <input type="tel" id="customer-phone" placeholder="+33 6 12 34 56 78">
+      </div>
+      <div style="grid-column: 1 / -1;">
         <label data-i18n="quote.ref">Référence devis</label>
         <input type="text" id="quote-ref" placeholder="auto-généré" readonly>
       </div>
@@ -1158,6 +1162,7 @@
         <div class="name" id="print-customer-name">—</div>
         <div class="detail" id="print-customer-contact">—</div>
         <div class="detail" id="print-customer-email">—</div>
+        <div class="detail" id="print-customer-phone">—</div>
       </div>
     </div>
 
@@ -1240,9 +1245,9 @@
           <div class="included-item"><span class="mark">✓</span><span><span class="label-strong" data-i18n="inc.sso.t">SSO, MFA, SAML, OIDC</span><br><span class="label-light" data-i18n="inc.sso.d">Standards natifs complets</span></span></div>
           <div class="included-item"><span class="mark">✓</span><span><span class="label-strong" data-i18n="inc.mon.t">Monitoring Grafana</span><br><span class="label-light" data-i18n="inc.mon.d">Provisionné dès J1</span></span></div>
           <div class="included-item"><span class="mark">✓</span><span><span class="label-strong" data-i18n="inc.upd.t">Mises à jour 1 clic</span><br><span class="label-light" data-i18n="inc.upd.d">0 downtime</span></span></div>
-          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong" data-i18n="inc.plug.t">Plugins custom</span><br><span class="label-light" data-i18n="inc.plug.d">FS Bucket + GitLab CI</span></span></div>
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong" data-i18n="inc.plug.t">Plugins custom</span><br><span class="label-light" data-i18n="inc.plug.d">FS Bucket</span></span></div>
           <div class="included-item"><span class="mark">✓</span><span><span class="label-strong" data-i18n="inc.scale.t">Auto-scaling</span><br><span class="label-light" data-i18n="inc.scale.d">Horizontal &amp; vertical</span></span></div>
-          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong" data-i18n="inc.host.t">Hébergement Paris</span><br><span class="label-light" data-i18n="inc.host.d">HDS — souveraineté FR</span></span></div>
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong" data-i18n="inc.host.t">Hébergement Paris</span></span></div>
         </div>
       </div>
     </div>
@@ -1278,7 +1283,7 @@
           <div class="breakdown-row">
             <div class="breakdown-label">
               <span data-i18n="detail.db">Base PostgreSQL managée</span>
-              <div class="sublabel" id="db-detail">Plan S-medium</div>
+              <div class="sublabel" id="db-detail">Plan S Medium Space</div>
             </div>
             <div class="breakdown-value"><span id="db-price">44</span>&nbsp;€</div>
           </div>
@@ -1320,7 +1325,7 @@
           </div>
           <div class="poi-body">
             <div class="poi-eyebrow" data-i18n="poi.eyebrow">Option · Please Open It</div>
-            <div class="poi-title" data-i18n="poi.title">Expert Keycloak depuis 7 ans</div>
+            <div class="poi-title" data-i18n="poi.title">Expert Keycloak depuis 8 ans</div>
             <div class="poi-desc" data-i18n="poi.desc">Disponible pour vos besoins de configuration spécifique, développement de modules sur-mesure, migration depuis un autre IAM, ou accompagnement dans la durée.</div>
             <div class="poi-services">
               <div class="poi-service"><span class="dot"></span><span data-i18n="poi.s1">Workshop de cadrage (1 à 2 jours)</span></div>
@@ -1343,12 +1348,12 @@
             <div class="enterprise-title" data-i18n="ent.title">Besoins spécifiques ou très haute disponibilité&nbsp;?</div>
             <div class="enterprise-desc" data-i18n="ent.desc">Pour les configurations qui dépassent le cadre standard, nos ingénieurs avant-vente conçoivent avec vous l'architecture cible et établissent un devis personnalisé sous 48h.</div>
             <div class="enterprise-features">
-              <div class="enterprise-feature"><span class="dot"></span><span data-i18n="ent.f1">Multi-région &amp; PRA</span></div>
+              <div class="enterprise-feature"><span class="dot"></span><span data-i18n="ent.f1">Multi-AZ &amp; PRA</span></div>
               <div class="enterprise-feature"><span class="dot"></span><span data-i18n="ent.f2">SLA contractuel renforcé</span></div>
               <div class="enterprise-feature"><span class="dot"></span><span data-i18n="ent.f3">Volumes &gt; 2M utilisateurs</span></div>
-              <div class="enterprise-feature"><span class="dot"></span><span data-i18n="ent.f4">Réseau privé dédié</span></div>
+              <div class="enterprise-feature"><span class="dot"></span><span data-i18n="ent.f4">Réseau meshé sur WireGuard</span></div>
               <div class="enterprise-feature"><span class="dot"></span><span data-i18n="ent.f5">Intégration SI complexe</span></div>
-              <div class="enterprise-feature"><span class="dot"></span><span data-i18n="ent.f6">Tarification engagement annuel</span></div>
+              <div class="enterprise-feature"><span class="dot"></span><span data-i18n="ent.f6">Tarification avantageuse sur engagement annuel</span></div>
             </div>
             <div class="enterprise-footer">
               <span><span data-i18n="ent.contact">Contact avant-vente&nbsp;:</span> <strong>sales@clever-cloud.com</strong></span>
@@ -1399,6 +1404,7 @@
     { name: 'Sebastien Brunat',    title: 'Direction Commerciale', email: 'sebastien.brunat@clever-cloud.com' },
     { name: 'Julia Buchner',       title: 'Direction Commerciale', email: 'julia.buchner@clever-cloud.com' },
     { name: 'Ismael Cisse',        title: 'Direction Commerciale', email: 'ismael.cisse@clever-cloud.com' },
+    { name: 'Valentin Durez',      title: 'Direction Commerciale', email: 'valentin.durez@clever-cloud.com' },
     { name: 'Cécile Guerin',       title: 'Account Manager',       email: 'cecile.guerin@clever-cloud.com' },
     { name: 'Mathilde Maenhout',   title: 'Direction Commerciale', email: 'mathilde.maenhout@clever-cloud.com' },
     { name: 'Bryan Marcelo Motta', title: 'Direction Commerciale', email: 'bryan.marcelo-motta@clever-cloud.com' },
@@ -1451,11 +1457,10 @@
       'inc.upd.t': 'Mises à jour 1 clic',
       'inc.upd.d': '0 downtime',
       'inc.plug.t': 'Plugins custom',
-      'inc.plug.d': 'FS Bucket + GitLab CI',
+      'inc.plug.d': 'FS Bucket',
       'inc.scale.t': 'Auto-scaling',
       'inc.scale.d': 'Horizontal & vertical',
       'inc.host.t': 'Hébergement Paris',
-      'inc.host.d': 'HDS — souveraineté FR',
       'price.eyebrow': 'Tarif mensuel HT',
       'price.unit': '€/mois',
       'price.annual1': 'soit ',
@@ -1472,7 +1477,7 @@
       'detail.total': 'Total mensuel HT',
       'detail.total.sub': 'Standard — sans engagement',
       'poi.eyebrow': 'Option · Please Open It',
-      'poi.title': 'Expert Keycloak depuis 7 ans',
+      'poi.title': 'Expert Keycloak depuis 8 ans',
       'poi.desc': 'Disponible pour vos besoins de configuration spécifique, développement de modules sur-mesure, migration depuis un autre IAM, ou accompagnement dans la durée.',
       'poi.s1': 'Workshop de cadrage (1 à 2 jours)',
       'poi.s2': 'Développement de plugins sur-mesure',
@@ -1482,12 +1487,12 @@
       'ent.eyebrow': 'Configuration sur-mesure',
       'ent.title': 'Besoins spécifiques ou très haute disponibilité ?',
       'ent.desc': 'Pour les configurations qui dépassent le cadre standard, nos ingénieurs avant-vente conçoivent avec vous l\'architecture cible et établissent un devis personnalisé sous 48h.',
-      'ent.f1': 'Multi-région & PRA',
+      'ent.f1': 'Multi-AZ & PRA',
       'ent.f2': 'SLA contractuel renforcé',
       'ent.f3': 'Volumes > 2M utilisateurs',
-      'ent.f4': 'Réseau privé dédié',
+      'ent.f4': 'Réseau meshé sur WireGuard',
       'ent.f5': 'Intégration SI complexe',
-      'ent.f6': 'Tarification engagement annuel',
+      'ent.f6': 'Tarification avantageuse sur engagement annuel',
       'ent.contact': 'Contact avant-vente :',
       'ent.delay': 'Devis sous 48h ouvrées',
       'btn.reset': 'Réinitialiser',
@@ -1497,6 +1502,7 @@
       'quote.company': 'Société',
       'quote.contact': 'Interlocuteur',
       'quote.email': 'Email',
+      'quote.phone': 'Téléphone',
       'quote.ref': 'Référence devis',
       'print.cond': 'Conditions :',
       'print.cond.text': 'Devis valable 30 jours à compter de la date d\'émission. Tarif mensuel HT, hors TVA 20%. Engagement sans durée minimale — résiliation à tout moment. Réversibilité totale garantie (export standard Keycloak). Hébergement en France métropolitaine. Données conformes RGPD.',
@@ -1558,11 +1564,10 @@
       'inc.upd.t': '1-click updates',
       'inc.upd.d': 'Zero downtime',
       'inc.plug.t': 'Custom plugins',
-      'inc.plug.d': 'FS Bucket + GitLab CI',
+      'inc.plug.d': 'FS Bucket',
       'inc.scale.t': 'Auto-scaling',
       'inc.scale.d': 'Horizontal & vertical',
       'inc.host.t': 'Paris hosting',
-      'inc.host.d': 'HDS — French sovereignty',
       'price.eyebrow': 'Monthly price (excl. tax)',
       'price.unit': '€/month',
       'price.annual1': 'i.e. ',
@@ -1579,7 +1584,7 @@
       'detail.total': 'Total monthly (excl. tax)',
       'detail.total.sub': 'Standard — no commitment',
       'poi.eyebrow': 'Option · Please Open It',
-      'poi.title': '7 years of Keycloak expertise',
+      'poi.title': '8 years of Keycloak expertise',
       'poi.desc': 'Available for your custom configuration needs, bespoke module development, migration from another IAM, or ongoing support.',
       'poi.s1': 'Scoping workshop (1 to 2 days)',
       'poi.s2': 'Custom plugin development',
@@ -1589,12 +1594,12 @@
       'ent.eyebrow': 'Custom configuration',
       'ent.title': 'Specific needs or very high availability?',
       'ent.desc': 'For configurations beyond the standard scope, our pre-sales engineers design the target architecture with you and provide a custom quote within 48 hours.',
-      'ent.f1': 'Multi-region & DRP',
+      'ent.f1': 'Multi-AZ & DRP',
       'ent.f2': 'Enhanced contractual SLA',
       'ent.f3': 'Volumes > 2M users',
-      'ent.f4': 'Dedicated private network',
+      'ent.f4': 'WireGuard mesh network',
       'ent.f5': 'Complex SI integration',
-      'ent.f6': 'Annual commitment pricing',
+      'ent.f6': 'Discounted pricing on annual commitment',
       'ent.contact': 'Pre-sales contact:',
       'ent.delay': 'Quote within 48 business hours',
       'btn.reset': 'Reset',
@@ -1604,6 +1609,7 @@
       'quote.company': 'Company',
       'quote.contact': 'Contact person',
       'quote.email': 'Email',
+      'quote.phone': 'Phone',
       'quote.ref': 'Quote reference',
       'print.cond': 'Terms:',
       'print.cond.text': 'Quote valid for 30 days from issue date. Monthly price excludes 20% VAT. No minimum commitment — cancellable at any time. Full reversibility guaranteed (standard Keycloak export). Hosting in metropolitan France. GDPR-compliant data.',
@@ -1709,12 +1715,12 @@
   // Infrastructure — Java VM + PostgreSQL
   function calculateInfra(users) {
     if (users <= 100) {
-      return { vm: 32, db: 5.25, vmLabel: 'VM Java plan S', dbLabel: 'PostgreSQL XXS-small' };
+      return { vm: 32, db: 5.25, vmLabel: 'VM Java plan S', dbLabel: 'PostgreSQL XXS Small Space' };
     }
     if (users <= 50000) {
-      return { vm: 32, db: 15, vmLabel: 'VM Java plan S', dbLabel: 'PostgreSQL XS-tiny' };
+      return { vm: 32, db: 15, vmLabel: 'VM Java plan S', dbLabel: 'PostgreSQL XS Tiny Space' };
     }
-    return { vm: 76, db: 44, vmLabel: 'VM Java plan M', dbLabel: 'PostgreSQL S-medium' };
+    return { vm: 76, db: 44, vmLabel: 'VM Java plan M', dbLabel: 'PostgreSQL S Medium Space' };
   }
 
   // Service tiers — multipliers applied to (license + infrastructure)
@@ -1743,7 +1749,15 @@
 
   // ===== Formatting =====
   function fmt(n) {
-    return Math.round(n).toLocaleString(currentLang === 'en' ? 'en-GB' : 'fr-FR');
+    const locale = currentLang === 'en' ? 'en-GB' : 'fr-FR';
+    // Round to nearest cent. If result is a whole number, show no decimals;
+    // otherwise show 2 decimals (e.g. "5,25" — not "5,00" or "5,2")
+    const rounded = Math.round(n * 100) / 100;
+    const hasCents = rounded % 1 !== 0;
+    return rounded.toLocaleString(locale, {
+      minimumFractionDigits: hasCents ? 2 : 0,
+      maximumFractionDigits: 2
+    });
   }
 
   // ===== Render =====
@@ -1852,7 +1866,7 @@
   });
 
   // Live-sync customer info to print fields
-  ['customer-name', 'customer-contact', 'customer-email', 'quote-ref'].forEach(id => {
+  ['customer-name', 'customer-contact', 'customer-email', 'customer-phone', 'quote-ref'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
     el.addEventListener('input', () => {
@@ -1860,6 +1874,7 @@
         'customer-name': 'print-customer-name',
         'customer-contact': 'print-customer-contact',
         'customer-email': 'print-customer-email',
+        'customer-phone': 'print-customer-phone',
         'quote-ref': 'print-ref'
       };
       const target = document.getElementById(map[id]);
@@ -1930,6 +1945,7 @@
     document.getElementById('print-customer-name').textContent = document.getElementById('customer-name').value || '[Société]';
     document.getElementById('print-customer-contact').textContent = document.getElementById('customer-contact').value || '';
     document.getElementById('print-customer-email').textContent = document.getElementById('customer-email').value || '';
+    document.getElementById('print-customer-phone').textContent = document.getElementById('customer-phone').value || '';
     setTimeout(() => window.print(), 100);
   });
 
