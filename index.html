@@ -87,6 +87,38 @@
   }
 
   /* ===== MODE TOGGLE — outlined navy ===== */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .lang-toggle {
+    display: flex;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .lang-toggle button {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.04em;
+    min-width: 36px;
+  }
+  .lang-toggle button + button {
+    border-left: 1.5px solid var(--border-strong);
+  }
+  .lang-toggle button:hover { color: var(--navy); background: var(--bg); }
+  .lang-toggle button.active {
+    background: var(--navy);
+    color: white;
+  }
   .mode-toggle {
     display: flex;
     gap: 4px;
@@ -195,6 +227,89 @@
     font-size: 13px;
     color: var(--muted);
     line-height: 1.4;
+  }
+
+  /* Info tag — small "i" bubble next to "utilisateurs actifs" */
+  .info-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 700;
+    font-style: italic;
+    margin-left: 4px;
+    cursor: help;
+    transform: translateY(-1px);
+    transition: all 0.15s;
+    position: relative;
+  }
+  .info-tag:hover {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: white;
+  }
+  .info-tag::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--navy);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.45;
+    width: 240px;
+    text-align: left;
+    letter-spacing: -0.005em;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.15s, visibility 0.15s;
+    z-index: 10;
+  }
+  .info-tag::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--navy);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s, visibility 0.15s;
+    z-index: 10;
+  }
+  .info-tag:hover::after,
+  .info-tag:hover::before {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Config note — clarification under the volume input */
+  .config-note {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: var(--bg);
+    border-left: 3px solid var(--accent-from);
+    border-radius: 0 4px 4px 0;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .config-note strong {
+    color: var(--navy);
+    font-weight: 700;
   }
 
   input[type="range"] {
@@ -563,6 +678,88 @@
   .poi-footer .poi-contact strong { color: var(--navy); font-weight: 700; }
   .poi-footer .poi-note { font-style: italic; color: var(--muted-soft); }
 
+  /* ===== ENTERPRISE / Custom quote card ===== */
+  .enterprise-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--navy);
+    padding: 24px 28px;
+    margin-bottom: 16px;
+  }
+  .enterprise-content { display: flex; gap: 18px; align-items: flex-start; }
+  .enterprise-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    background: var(--navy);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 20px;
+  }
+  .enterprise-body { flex: 1; }
+  .enterprise-eyebrow {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--navy);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .enterprise-title {
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--navy);
+    line-height: 1.25;
+    margin-bottom: 10px;
+    letter-spacing: -0.015em;
+  }
+  .enterprise-desc {
+    font-size: 13.5px;
+    color: var(--navy);
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+  .enterprise-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 16px;
+    margin-bottom: 16px;
+  }
+  .enterprise-feature {
+    font-size: 12.5px;
+    color: var(--navy);
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .enterprise-feature .dot {
+    flex-shrink: 0;
+    width: 5px;
+    height: 5px;
+    background: var(--accent-from);
+    border-radius: 50%;
+    transform: translateY(-2px);
+  }
+  .enterprise-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .enterprise-footer strong { color: var(--navy); font-weight: 700; }
+  @media (max-width: 640px) {
+    .enterprise-features { grid-template-columns: 1fr; }
+  }
+
   /* ===== ACTIONS ===== */
   .actions {
     display: flex;
@@ -727,6 +924,17 @@
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
     }
+    .enterprise-card {
+      background: var(--bg) !important;
+      border-left: 4px solid var(--navy) !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      padding: 16px 20px;
+    }
+    .enterprise-icon, .enterprise-feature .dot {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
   }
 
   /* Print-only blocks hidden by default */
@@ -855,49 +1063,55 @@
       </svg>
     </div>
     <div class="brand-text">
-      <span class="title">clever cloud</span>
+      <span class="title" data-i18n="brand.name">clever cloud</span>
       <span class="sep"></span>
-      <span class="subtitle">Keycloak as a Service</span>
+      <span class="subtitle" data-i18n="brand.product">Keycloak as a Service</span>
     </div>
   </div>
-  <div class="mode-toggle">
-    <button id="mode-sales" class="active">Mode commercial</button>
-    <button id="mode-quote">Devis client</button>
+  <div class="header-actions">
+    <div class="lang-toggle">
+      <button id="lang-fr" class="active" data-lang="fr">FR</button>
+      <button id="lang-en" data-lang="en">EN</button>
+    </div>
+    <div class="mode-toggle">
+      <button id="mode-sales" class="active" data-i18n="mode.sales">Mode commercial</button>
+      <button id="mode-quote" data-i18n="mode.quote">Devis client</button>
+    </div>
   </div>
 </header>
 
 <div class="container">
 
   <div class="hero">
-    <div class="hero-eyebrow">Add on · Calculateur</div>
-    <h1 class="hero-title">Estimez votre <span class="underlined">tarif Keycloak</span></h1>
-    <p class="hero-subtitle">IAM managé, hébergement souverain français, scalabilité automatique. Tarif transparent à l'usage actif.</p>
+    <div class="hero-eyebrow" data-i18n="hero.eyebrow">Add on · Calculateur</div>
+    <h1 class="hero-title"><span data-i18n="hero.title1">Estimez votre </span><span class="underlined" data-i18n="hero.title2">tarif Keycloak</span></h1>
+    <p class="hero-subtitle" data-i18n="hero.subtitle">IAM managé, hébergement souverain français, scalabilité automatique. Tarif transparent à l'usage actif.</p>
   </div>
 
   <!-- Quote info form (only visible in quote mode) -->
   <div class="quote-info">
-    <div class="quote-info-title">Informations client</div>
+    <div class="quote-info-title" data-i18n="quote.title">Informations client</div>
     <div class="quote-form">
       <div style="grid-column: 1 / -1;">
-        <label>Commercial émetteur</label>
+        <label data-i18n="quote.rep">Commercial émetteur</label>
         <select id="customer-rep" class="select-input">
           <!-- populated by JS from SALES_TEAM list -->
         </select>
       </div>
       <div>
-        <label>Société</label>
+        <label data-i18n="quote.company">Société</label>
         <input type="text" id="customer-name" placeholder="ex. HelloAsso">
       </div>
       <div>
-        <label>Interlocuteur</label>
+        <label data-i18n="quote.contact">Interlocuteur</label>
         <input type="text" id="customer-contact" placeholder="ex. Nicolas Dupont — CTO">
       </div>
       <div>
-        <label>Email</label>
+        <label data-i18n="quote.email">Email</label>
         <input type="email" id="customer-email" placeholder="contact@entreprise.fr">
       </div>
       <div>
-        <label>Référence devis</label>
+        <label data-i18n="quote.ref">Référence devis</label>
         <input type="text" id="quote-ref" placeholder="auto-généré" readonly>
       </div>
     </div>
@@ -927,20 +1141,20 @@
         </div>
       </div>
       <div class="print-meta">
-        <div><strong>DEVIS</strong></div>
-        <div>Réf. <span class="ref" id="print-ref">—</span></div>
+        <div><strong data-i18n="print.devis">DEVIS</strong></div>
+        <div><span data-i18n="print.ref">Réf.</span> <span class="ref" id="print-ref">—</span></div>
         <div id="print-date">—</div>
       </div>
     </div>
     <div class="print-customer">
       <div>
-        <h4>Émetteur</h4>
-        <div class="name">Clever Cloud SAS</div>
+        <h4 data-i18n="print.from">Émetteur</h4>
+        <div class="name" data-i18n="print.cc.name">Clever Cloud SAS</div>
         <div class="detail">4 rue Voltaire, 44000 Nantes</div>
         <div class="detail">commercial@clever-cloud.com</div>
       </div>
       <div>
-        <h4>Destinataire</h4>
+        <h4 data-i18n="print.to">Destinataire</h4>
         <div class="name" id="print-customer-name">—</div>
         <div class="detail" id="print-customer-contact">—</div>
         <div class="detail" id="print-customer-email">—</div>
@@ -949,17 +1163,17 @@
 
     <div class="print-summary">
       <div class="print-summary-item">
-        <h4>Service</h4>
+        <h4 data-i18n="print.service">Service</h4>
         <div class="value">Keycloak as a Service</div>
-        <div class="sub">IAM managé — Cloud souverain France</div>
+        <div class="sub" data-i18n="print.service.sub">IAM managé — Cloud souverain France</div>
       </div>
       <div class="print-summary-item">
-        <h4>Volume cible</h4>
+        <h4 data-i18n="print.volume">Volume cible</h4>
         <div class="value"><span id="print-users">100 000</span> utilisateurs actifs / mois</div>
         <div class="sub">Tarification dégressive par tranche</div>
       </div>
       <div class="print-summary-item">
-        <h4>Niveau</h4>
+        <h4 data-i18n="print.level">Niveau</h4>
         <div class="value" id="print-tier">Standard</div>
         <div class="sub" id="print-tier-desc">Support 9h-18h, jours ouvrés</div>
       </div>
@@ -971,11 +1185,15 @@
     <!-- LEFT: INPUTS -->
     <div>
       <div class="card">
-        <div class="eyebrow">Configuration · Volume</div>
+        <div class="eyebrow" data-i18n="config.eyebrow">Configuration · Volume</div>
 
         <div class="users-display">
           <span class="num" id="users-display">100&nbsp;000</span>
-          <span class="lbl">utilisateurs actifs<br>par mois</span>
+          <span class="lbl">
+            <span data-i18n="config.users1">utilisateurs actifs</span>
+            <span class="info-tag" data-i18n-tooltip="config.tooltip">i</span>
+            <br><span data-i18n="config.users2">par mois</span>
+          </span>
         </div>
         <input type="range" id="users-slider" min="0" max="2000000" step="1000" value="100000">
         <div class="presets">
@@ -988,40 +1206,43 @@
           <div class="preset" data-val="2000000">2M</div>
         </div>
         <input type="number" id="users-input" class="number-input" value="100000" min="0">
+        <div class="config-note" data-i18n="config.note">
+          <strong>Utilisateur actif</strong> = compte ayant effectué au moins une connexion dans le mois. Les comptes dormants ne sont pas facturés.
+        </div>
       </div>
 
       <div class="card">
-        <div class="eyebrow">Niveau de service</div>
+        <div class="eyebrow" data-i18n="service.eyebrow">Niveau de service</div>
         <div class="tiers">
           <div class="tier active" data-tier="standard" data-mult="1">
-            <div class="tier-name">Standard</div>
-            <div class="tier-desc">Support 9h–18h, jours ouvrés</div>
-            <div class="tier-mult">Pas de surcoût</div>
+            <div class="tier-name" data-i18n="tier.standard.name">Standard</div>
+            <div class="tier-desc" data-i18n="tier.standard.desc">Support 9h–18h, jours ouvrés</div>
+            <div class="tier-mult" data-i18n="tier.standard.mult">Pas de surcoût</div>
           </div>
           <div class="tier" data-tier="premium" data-mult="1.8">
-            <div class="tier-name">Premium 24/7</div>
-            <div class="tier-desc">Astreinte 24/7, SLA renforcé</div>
-            <div class="tier-mult">Coefficient ×1.8</div>
+            <div class="tier-name" data-i18n="tier.premium.name">Premium 24/7</div>
+            <div class="tier-desc" data-i18n="tier.premium.desc">Astreinte 24/7, SLA renforcé</div>
+            <div class="tier-mult" data-i18n="tier.premium.mult">Coefficient ×1.8</div>
           </div>
           <div class="tier" data-tier="hds" data-mult="1.4">
-            <div class="tier-name">HDS</div>
-            <div class="tier-desc">Données de santé — 6 niveaux</div>
-            <div class="tier-mult">Coefficient ×1.4</div>
+            <div class="tier-name" data-i18n="tier.hds.name">HDS</div>
+            <div class="tier-desc" data-i18n="tier.hds.desc">Données de santé — 6 niveaux</div>
+            <div class="tier-mult" data-i18n="tier.hds.mult">Coefficient ×1.4</div>
           </div>
         </div>
       </div>
 
       <div class="card">
-        <div class="eyebrow">Ce qui est inclus</div>
+        <div class="eyebrow" data-i18n="included.eyebrow">Ce qui est inclus</div>
         <div class="included">
-          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong">Keycloak vanilla</span><br><span class="label-light">0 fork, réversibilité totale</span></span></div>
-          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong">PostgreSQL managé</span><br><span class="label-light">Backups automatiques</span></span></div>
-          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong">SSO, MFA, SAML, OIDC</span><br><span class="label-light">Standards natifs complets</span></span></div>
-          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong">Monitoring Grafana</span><br><span class="label-light">Provisionné dès J1</span></span></div>
-          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong">Mises à jour 1 clic</span><br><span class="label-light">0 downtime</span></span></div>
-          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong">Plugins custom</span><br><span class="label-light">FS Bucket + GitLab CI</span></span></div>
-          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong">Auto-scaling</span><br><span class="label-light">Horizontal &amp; vertical</span></span></div>
-          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong">Hébergement Paris</span><br><span class="label-light">HDS — souveraineté FR</span></span></div>
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong" data-i18n="inc.vanilla.t">Keycloak vanilla</span><br><span class="label-light" data-i18n="inc.vanilla.d">0 fork, réversibilité totale</span></span></div>
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong" data-i18n="inc.pg.t">PostgreSQL managé</span><br><span class="label-light" data-i18n="inc.pg.d">Backups automatiques</span></span></div>
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong" data-i18n="inc.sso.t">SSO, MFA, SAML, OIDC</span><br><span class="label-light" data-i18n="inc.sso.d">Standards natifs complets</span></span></div>
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong" data-i18n="inc.mon.t">Monitoring Grafana</span><br><span class="label-light" data-i18n="inc.mon.d">Provisionné dès J1</span></span></div>
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong" data-i18n="inc.upd.t">Mises à jour 1 clic</span><br><span class="label-light" data-i18n="inc.upd.d">0 downtime</span></span></div>
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong" data-i18n="inc.plug.t">Plugins custom</span><br><span class="label-light" data-i18n="inc.plug.d">FS Bucket + GitLab CI</span></span></div>
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong" data-i18n="inc.scale.t">Auto-scaling</span><br><span class="label-light" data-i18n="inc.scale.d">Horizontal &amp; vertical</span></span></div>
+          <div class="included-item"><span class="mark">✓</span><span><span class="label-strong" data-i18n="inc.host.t">Hébergement Paris</span><br><span class="label-light" data-i18n="inc.host.d">HDS — souveraineté FR</span></span></div>
         </div>
       </div>
     </div>
@@ -1029,60 +1250,60 @@
     <!-- RIGHT: OUTPUT -->
     <div>
       <div class="price-card">
-        <div class="price-eyebrow">Tarif mensuel HT</div>
+        <div class="price-eyebrow" data-i18n="price.eyebrow">Tarif mensuel HT</div>
         <div class="price-main">
           <span class="price-value" id="total-price">1&nbsp;665</span>
-          <span class="price-unit">€/mois</span>
+          <span class="price-unit" data-i18n="price.unit">€/mois</span>
         </div>
-        <div class="price-annual">soit <span class="amount" id="annual-price">19&nbsp;980&nbsp;€</span> par an HT</div>
+        <div class="price-annual"><span data-i18n="price.annual1">soit </span><span class="amount" id="annual-price">19&nbsp;980&nbsp;€</span><span data-i18n="price.annual2"> par an HT</span></div>
       </div>
 
       <div class="card">
-        <div class="eyebrow">Détail du tarif</div>
+        <div class="eyebrow" data-i18n="detail.eyebrow">Détail du tarif</div>
         <div class="breakdown">
           <div class="breakdown-row">
             <div class="breakdown-label">
-              Licence Keycloak
-              <div class="sublabel" id="license-detail">Tarification dégressive par tranche</div>
+              <span data-i18n="detail.license">Licence Keycloak</span>
+              <div class="sublabel" id="license-detail" data-i18n="detail.license.sub">Tarification dégressive par tranche</div>
             </div>
             <div class="breakdown-value"><span id="license-price">1&nbsp;545</span>&nbsp;€</div>
           </div>
           <div class="breakdown-row">
             <div class="breakdown-label">
-              Runtime Java
+              <span data-i18n="detail.runtime">Runtime Java</span>
               <div class="sublabel" id="vm-detail">VM Java plan M</div>
             </div>
             <div class="breakdown-value"><span id="vm-price">76</span>&nbsp;€</div>
           </div>
           <div class="breakdown-row">
             <div class="breakdown-label">
-              Base PostgreSQL managée
+              <span data-i18n="detail.db">Base PostgreSQL managée</span>
               <div class="sublabel" id="db-detail">Plan S-medium</div>
             </div>
             <div class="breakdown-value"><span id="db-price">44</span>&nbsp;€</div>
           </div>
           <div class="breakdown-row subtotal" id="subtotal-row" style="display:none;">
-            <div class="breakdown-label">Sous-total service</div>
+            <div class="breakdown-label" data-i18n="detail.subtotal">Sous-total service</div>
             <div class="breakdown-value"><span id="subtotal-price">0</span>&nbsp;€</div>
           </div>
           <div class="breakdown-row" id="multiplier-row" style="display:none;">
             <div class="breakdown-label">
               <span id="mult-label">Coefficient ×1.4 (HDS)</span>
-              <div class="sublabel" id="mult-detail">Surcoût sur licence + infrastructure</div>
+              <div class="sublabel" id="mult-detail" data-i18n="detail.mult.sub">Surcoût sur licence + infrastructure</div>
             </div>
             <div class="breakdown-value">+<span id="mult-price">0</span>&nbsp;€</div>
           </div>
           <div class="breakdown-row" id="flat-row" style="display:none;">
             <div class="breakdown-label">
-              <span id="flat-label">Forfait</span>
-              <div class="sublabel" id="flat-detail">Montant fixe mensuel</div>
+              <span id="flat-label" data-i18n="detail.flat">Forfait</span>
+              <div class="sublabel" id="flat-detail" data-i18n="detail.flat.sub">Montant fixe mensuel</div>
             </div>
             <div class="breakdown-value">+<span id="flat-price">0</span>&nbsp;€</div>
           </div>
           <div class="breakdown-row total">
             <div class="breakdown-label">
-              Total mensuel HT
-              <div class="sublabel" id="total-detail">Standard — sans engagement</div>
+              <span data-i18n="detail.total">Total mensuel HT</span>
+              <div class="sublabel" id="total-detail" data-i18n="detail.total.sub">Standard — sans engagement</div>
             </div>
             <div class="breakdown-value"><span id="total-price-2">1&nbsp;665</span>&nbsp;€</div>
           </div>
@@ -1098,36 +1319,61 @@
             </svg>
           </div>
           <div class="poi-body">
-            <div class="poi-eyebrow">Option · Please Open It</div>
-            <div class="poi-title">Expert Keycloak depuis 7 ans</div>
-            <div class="poi-desc">Disponible pour vos besoins de configuration spécifique, développement de modules sur-mesure, migration depuis un autre IAM, ou accompagnement dans la durée.</div>
+            <div class="poi-eyebrow" data-i18n="poi.eyebrow">Option · Please Open It</div>
+            <div class="poi-title" data-i18n="poi.title">Expert Keycloak depuis 7 ans</div>
+            <div class="poi-desc" data-i18n="poi.desc">Disponible pour vos besoins de configuration spécifique, développement de modules sur-mesure, migration depuis un autre IAM, ou accompagnement dans la durée.</div>
             <div class="poi-services">
-              <div class="poi-service"><span class="dot"></span>Workshop de cadrage (1 à 2 jours)</div>
-              <div class="poi-service"><span class="dot"></span>Développement de plugins sur-mesure</div>
-              <div class="poi-service"><span class="dot"></span>Support et accompagnement au ticket</div>
+              <div class="poi-service"><span class="dot"></span><span data-i18n="poi.s1">Workshop de cadrage (1 à 2 jours)</span></div>
+              <div class="poi-service"><span class="dot"></span><span data-i18n="poi.s2">Développement de plugins sur-mesure</span></div>
+              <div class="poi-service"><span class="dot"></span><span data-i18n="poi.s3">Support et accompagnement au ticket</span></div>
             </div>
             <div class="poi-footer">
-              <span class="poi-contact">Contact direct&nbsp;: <strong>contact@please-open.it</strong></span>
-              <span class="poi-note">Facturation séparée — sur devis</span>
+              <span class="poi-contact"><span data-i18n="poi.contact">Contact direct&nbsp;:</span> <strong>contact@please-open.it</strong></span>
+              <span class="poi-note" data-i18n="poi.note">Facturation séparée — sur devis</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="enterprise-card">
+        <div class="enterprise-content">
+          <div class="enterprise-icon">⌘</div>
+          <div class="enterprise-body">
+            <div class="enterprise-eyebrow" data-i18n="ent.eyebrow">Configuration sur-mesure</div>
+            <div class="enterprise-title" data-i18n="ent.title">Besoins spécifiques ou très haute disponibilité&nbsp;?</div>
+            <div class="enterprise-desc" data-i18n="ent.desc">Pour les configurations qui dépassent le cadre standard, nos ingénieurs avant-vente conçoivent avec vous l'architecture cible et établissent un devis personnalisé sous 48h.</div>
+            <div class="enterprise-features">
+              <div class="enterprise-feature"><span class="dot"></span><span data-i18n="ent.f1">Multi-région &amp; PRA</span></div>
+              <div class="enterprise-feature"><span class="dot"></span><span data-i18n="ent.f2">SLA contractuel renforcé</span></div>
+              <div class="enterprise-feature"><span class="dot"></span><span data-i18n="ent.f3">Volumes &gt; 2M utilisateurs</span></div>
+              <div class="enterprise-feature"><span class="dot"></span><span data-i18n="ent.f4">Réseau privé dédié</span></div>
+              <div class="enterprise-feature"><span class="dot"></span><span data-i18n="ent.f5">Intégration SI complexe</span></div>
+              <div class="enterprise-feature"><span class="dot"></span><span data-i18n="ent.f6">Tarification engagement annuel</span></div>
+            </div>
+            <div class="enterprise-footer">
+              <span><span data-i18n="ent.contact">Contact avant-vente&nbsp;:</span> <strong>sales@clever-cloud.com</strong></span>
+              <span data-i18n="ent.delay">Devis sous 48h ouvrées</span>
             </div>
           </div>
         </div>
       </div>
 
       <div class="actions">
-        <button class="btn btn-secondary" id="btn-reset">Réinitialiser</button>
-        <button class="btn btn-primary" id="btn-print">Imprimer / Exporter PDF</button>
+        <button class="btn btn-secondary" id="btn-reset" data-i18n="btn.reset">Réinitialiser</button>
+        <button class="btn btn-primary" id="btn-print" data-i18n="btn.print">Imprimer / Exporter PDF</button>
       </div>
 
     </div>
   </div>  <!-- Print-only footer -->
   <div class="print-only">
     <div class="print-footer">
-      <strong>Conditions :</strong> Devis valable 30 jours à compter de la date d'émission. Tarif mensuel HT, hors TVA 20%. Engagement sans durée minimale — résiliation à tout moment. Réversibilité totale garantie (export standard Keycloak). Hébergement en France métropolitaine. Données conformes RGPD.
+      <strong data-i18n="print.activeuser">Utilisateur actif :</strong> <span data-i18n="print.activeuser.text">compte ayant effectué au moins une connexion dans le mois. Les comptes dormants ne sont pas facturés — vous payez uniquement l'usage réel.</span>
       <br><br>
-      <strong>Prochaines étapes :</strong> validation devis → mise en service sous 24h → workshop de cadrage avec Please Open It (1 à 2 jours, sur option).
+      <strong data-i18n="print.cond">Conditions :</strong> <span data-i18n="print.cond.text">Devis valable 30 jours à compter de la date d'émission. Tarif mensuel HT, hors TVA 20%. Engagement sans durée minimale — résiliation à tout moment. Réversibilité totale garantie (export standard Keycloak). Hébergement en France métropolitaine. Données conformes RGPD.</span>
       <br><br>
-      <strong>Contact commercial :</strong> <span id="print-rep">Florent Perreux — Directeur Commercial Clever Cloud — florent.perreux@clever-cloud.com</span>
+      <strong data-i18n="print.next">Prochaines étapes :</strong> <span data-i18n="print.next.text">validation devis → mise en service sous 24h → workshop de cadrage avec Please Open It (1 à 2 jours, sur option).</span>
+      <br><br>
+      <strong data-i18n="print.contact">Contact commercial :</strong> <span id="print-rep">Florent Perreux — Directeur Commercial Clever Cloud — florent.perreux@clever-cloud.com</span>
     </div>
   </div>
 
@@ -1161,7 +1407,279 @@
     { name: 'Loic Tosser',         title: 'Direction Commerciale', email: 'loic.tosser@clever-cloud.com' },
   ];
 
-  // ===== Pricing logic (Clever Cloud Keycloak as a Service) =====
+  // ============================================================
+  // TRADUCTIONS — éditez les chaînes ici pour ajuster le wording.
+  // Format : 'cle': 'texte affiché' (la clé matche data-i18n="cle"
+  // sur les éléments HTML)
+  // ============================================================
+  const I18N = {
+    fr: {
+      'mode.sales': 'Mode commercial',
+      'mode.quote': 'Devis client',
+      'brand.name': 'clever cloud',
+      'brand.product': 'Keycloak as a Service',
+      'hero.eyebrow': 'Add on · Calculateur',
+      'hero.title1': 'Estimez votre ',
+      'hero.title2': 'tarif Keycloak',
+      'hero.subtitle': 'IAM managé, hébergement souverain français, scalabilité automatique. Tarif transparent à l\'usage actif.',
+      'config.eyebrow': 'Configuration · Volume',
+      'config.users1': 'utilisateurs actifs',
+      'config.users2': 'par mois',
+      'config.tooltip': 'Un compte ayant effectué au moins une connexion dans le mois. Les comptes dormants ne sont pas facturés.',
+      'config.note': '<strong>Utilisateur actif</strong> = compte ayant effectué au moins une connexion dans le mois. Les comptes dormants ne sont pas facturés.',
+      'print.activeuser': 'Utilisateur actif :',
+      'print.activeuser.text': 'compte ayant effectué au moins une connexion dans le mois. Les comptes dormants ne sont pas facturés — vous payez uniquement l\'usage réel.',
+      'service.eyebrow': 'Niveau de service',
+      'tier.standard.name': 'Standard',
+      'tier.standard.desc': 'Support 9h–18h, jours ouvrés',
+      'tier.standard.mult': 'Pas de surcoût',
+      'tier.premium.name': 'Premium 24/7',
+      'tier.premium.desc': 'Astreinte 24/7, SLA renforcé',
+      'tier.premium.mult': 'Coefficient ×1.8',
+      'tier.hds.name': 'HDS',
+      'tier.hds.desc': 'Données de santé — 6 niveaux',
+      'tier.hds.mult': 'Coefficient ×1.4',
+      'included.eyebrow': 'Ce qui est inclus',
+      'inc.vanilla.t': 'Keycloak vanilla',
+      'inc.vanilla.d': '0 fork, réversibilité totale',
+      'inc.pg.t': 'PostgreSQL managé',
+      'inc.pg.d': 'Backups automatiques',
+      'inc.sso.t': 'SSO, MFA, SAML, OIDC',
+      'inc.sso.d': 'Standards natifs complets',
+      'inc.mon.t': 'Monitoring Grafana',
+      'inc.mon.d': 'Provisionné dès J1',
+      'inc.upd.t': 'Mises à jour 1 clic',
+      'inc.upd.d': '0 downtime',
+      'inc.plug.t': 'Plugins custom',
+      'inc.plug.d': 'FS Bucket + GitLab CI',
+      'inc.scale.t': 'Auto-scaling',
+      'inc.scale.d': 'Horizontal & vertical',
+      'inc.host.t': 'Hébergement Paris',
+      'inc.host.d': 'HDS — souveraineté FR',
+      'price.eyebrow': 'Tarif mensuel HT',
+      'price.unit': '€/mois',
+      'price.annual1': 'soit ',
+      'price.annual2': ' par an HT',
+      'detail.eyebrow': 'Détail du tarif',
+      'detail.license': 'Licence Keycloak',
+      'detail.license.sub': 'Tarification dégressive par tranche',
+      'detail.runtime': 'Runtime Java',
+      'detail.db': 'Base PostgreSQL managée',
+      'detail.subtotal': 'Sous-total service',
+      'detail.mult.sub': 'Surcoût sur licence + infrastructure',
+      'detail.flat': 'Forfait',
+      'detail.flat.sub': 'Montant fixe mensuel',
+      'detail.total': 'Total mensuel HT',
+      'detail.total.sub': 'Standard — sans engagement',
+      'poi.eyebrow': 'Option · Please Open It',
+      'poi.title': 'Expert Keycloak depuis 7 ans',
+      'poi.desc': 'Disponible pour vos besoins de configuration spécifique, développement de modules sur-mesure, migration depuis un autre IAM, ou accompagnement dans la durée.',
+      'poi.s1': 'Workshop de cadrage (1 à 2 jours)',
+      'poi.s2': 'Développement de plugins sur-mesure',
+      'poi.s3': 'Support et accompagnement au ticket',
+      'poi.contact': 'Contact direct :',
+      'poi.note': 'Facturation séparée — sur devis',
+      'ent.eyebrow': 'Configuration sur-mesure',
+      'ent.title': 'Besoins spécifiques ou très haute disponibilité ?',
+      'ent.desc': 'Pour les configurations qui dépassent le cadre standard, nos ingénieurs avant-vente conçoivent avec vous l\'architecture cible et établissent un devis personnalisé sous 48h.',
+      'ent.f1': 'Multi-région & PRA',
+      'ent.f2': 'SLA contractuel renforcé',
+      'ent.f3': 'Volumes > 2M utilisateurs',
+      'ent.f4': 'Réseau privé dédié',
+      'ent.f5': 'Intégration SI complexe',
+      'ent.f6': 'Tarification engagement annuel',
+      'ent.contact': 'Contact avant-vente :',
+      'ent.delay': 'Devis sous 48h ouvrées',
+      'btn.reset': 'Réinitialiser',
+      'btn.print': 'Imprimer / Exporter PDF',
+      'quote.title': 'Informations client',
+      'quote.rep': 'Commercial émetteur',
+      'quote.company': 'Société',
+      'quote.contact': 'Interlocuteur',
+      'quote.email': 'Email',
+      'quote.ref': 'Référence devis',
+      'print.cond': 'Conditions :',
+      'print.cond.text': 'Devis valable 30 jours à compter de la date d\'émission. Tarif mensuel HT, hors TVA 20%. Engagement sans durée minimale — résiliation à tout moment. Réversibilité totale garantie (export standard Keycloak). Hébergement en France métropolitaine. Données conformes RGPD.',
+      'print.next': 'Prochaines étapes :',
+      'print.next.text': 'validation devis → mise en service sous 24h → workshop de cadrage avec Please Open It (1 à 2 jours, sur option).',
+      'print.contact': 'Contact commercial :',
+      // Used in JS (dynamic strings)
+      'rep.title.suffix': 'Clever Cloud',
+      'print.devis': 'DEVIS',
+      'print.ref': 'Réf.',
+      'print.from': 'Émetteur',
+      'print.cc.name': 'Clever Cloud SAS',
+      'print.to': 'Destinataire',
+      'print.service': 'Service',
+      'print.service.sub': 'IAM managé — Cloud souverain France',
+      'print.volume': 'Volume cible',
+      'print.level': 'Niveau',
+      'detail.coef': 'Coefficient',
+      'detail.mult.applied': 'Surcoût appliqué sur licence + infrastructure',
+      'detail.nocommit': '— sans engagement',
+      'detail.license.none': 'Aucune licence — 100 premiers utilisateurs inclus',
+      'detail.license.deg': 'Dégressif :',
+    },
+    en: {
+      'mode.sales': 'Sales mode',
+      'mode.quote': 'Client quote',
+      'brand.name': 'clever cloud',
+      'brand.product': 'Keycloak as a Service',
+      'hero.eyebrow': 'Add on · Calculator',
+      'hero.title1': 'Estimate your ',
+      'hero.title2': 'Keycloak pricing',
+      'hero.subtitle': 'Managed IAM, French sovereign hosting, automatic scaling. Transparent active-user pricing.',
+      'config.eyebrow': 'Configuration · Volume',
+      'config.users1': 'active users',
+      'config.users2': 'per month',
+      'config.tooltip': 'An account that has logged in at least once during the month. Dormant accounts are not billed.',
+      'config.note': '<strong>Active user</strong> = account that has logged in at least once during the month. Dormant accounts are not billed.',
+      'print.activeuser': 'Active user:',
+      'print.activeuser.text': 'account that has logged in at least once during the month. Dormant accounts are not billed — you only pay for actual usage.',
+      'service.eyebrow': 'Service level',
+      'tier.standard.name': 'Standard',
+      'tier.standard.desc': 'Support 9am–6pm, business days',
+      'tier.standard.mult': 'No extra cost',
+      'tier.premium.name': 'Premium 24/7',
+      'tier.premium.desc': '24/7 on-call, enhanced SLA',
+      'tier.premium.mult': 'Coefficient ×1.8',
+      'tier.hds.name': 'HDS',
+      'tier.hds.desc': 'Health data — 6 levels',
+      'tier.hds.mult': 'Coefficient ×1.4',
+      'included.eyebrow': 'What\'s included',
+      'inc.vanilla.t': 'Vanilla Keycloak',
+      'inc.vanilla.d': 'No fork, full reversibility',
+      'inc.pg.t': 'Managed PostgreSQL',
+      'inc.pg.d': 'Automatic backups',
+      'inc.sso.t': 'SSO, MFA, SAML, OIDC',
+      'inc.sso.d': 'Native standards, fully supported',
+      'inc.mon.t': 'Grafana monitoring',
+      'inc.mon.d': 'Provisioned from day one',
+      'inc.upd.t': '1-click updates',
+      'inc.upd.d': 'Zero downtime',
+      'inc.plug.t': 'Custom plugins',
+      'inc.plug.d': 'FS Bucket + GitLab CI',
+      'inc.scale.t': 'Auto-scaling',
+      'inc.scale.d': 'Horizontal & vertical',
+      'inc.host.t': 'Paris hosting',
+      'inc.host.d': 'HDS — French sovereignty',
+      'price.eyebrow': 'Monthly price (excl. tax)',
+      'price.unit': '€/month',
+      'price.annual1': 'i.e. ',
+      'price.annual2': ' per year (excl. tax)',
+      'detail.eyebrow': 'Pricing breakdown',
+      'detail.license': 'Keycloak license',
+      'detail.license.sub': 'Tiered volume pricing',
+      'detail.runtime': 'Java runtime',
+      'detail.db': 'Managed PostgreSQL database',
+      'detail.subtotal': 'Service subtotal',
+      'detail.mult.sub': 'Surcharge on license + infrastructure',
+      'detail.flat': 'Flat fee',
+      'detail.flat.sub': 'Fixed monthly amount',
+      'detail.total': 'Total monthly (excl. tax)',
+      'detail.total.sub': 'Standard — no commitment',
+      'poi.eyebrow': 'Option · Please Open It',
+      'poi.title': '7 years of Keycloak expertise',
+      'poi.desc': 'Available for your custom configuration needs, bespoke module development, migration from another IAM, or ongoing support.',
+      'poi.s1': 'Scoping workshop (1 to 2 days)',
+      'poi.s2': 'Custom plugin development',
+      'poi.s3': 'Ticket-based support and guidance',
+      'poi.contact': 'Direct contact:',
+      'poi.note': 'Separate billing — on quote',
+      'ent.eyebrow': 'Custom configuration',
+      'ent.title': 'Specific needs or very high availability?',
+      'ent.desc': 'For configurations beyond the standard scope, our pre-sales engineers design the target architecture with you and provide a custom quote within 48 hours.',
+      'ent.f1': 'Multi-region & DRP',
+      'ent.f2': 'Enhanced contractual SLA',
+      'ent.f3': 'Volumes > 2M users',
+      'ent.f4': 'Dedicated private network',
+      'ent.f5': 'Complex SI integration',
+      'ent.f6': 'Annual commitment pricing',
+      'ent.contact': 'Pre-sales contact:',
+      'ent.delay': 'Quote within 48 business hours',
+      'btn.reset': 'Reset',
+      'btn.print': 'Print / Export PDF',
+      'quote.title': 'Client information',
+      'quote.rep': 'Issuing sales rep',
+      'quote.company': 'Company',
+      'quote.contact': 'Contact person',
+      'quote.email': 'Email',
+      'quote.ref': 'Quote reference',
+      'print.cond': 'Terms:',
+      'print.cond.text': 'Quote valid for 30 days from issue date. Monthly price excludes 20% VAT. No minimum commitment — cancellable at any time. Full reversibility guaranteed (standard Keycloak export). Hosting in metropolitan France. GDPR-compliant data.',
+      'print.next': 'Next steps:',
+      'print.next.text': 'quote validation → service live within 24h → scoping workshop with Please Open It (1 to 2 days, optional).',
+      'print.contact': 'Sales contact:',
+      'rep.title.suffix': 'Clever Cloud',
+      'print.devis': 'QUOTE',
+      'print.ref': 'Ref.',
+      'print.from': 'From',
+      'print.cc.name': 'Clever Cloud SAS',
+      'print.to': 'To',
+      'print.service': 'Service',
+      'print.service.sub': 'Managed IAM — French sovereign cloud',
+      'print.volume': 'Target volume',
+      'print.level': 'Service level',
+      'detail.coef': 'Coefficient',
+      'detail.mult.applied': 'Surcharge applied on license + infrastructure',
+      'detail.nocommit': '— no commitment',
+      'detail.license.none': 'No license — first 100 users included',
+      'detail.license.deg': 'Tiered:',
+    },
+  };
+
+  let currentLang = 'fr';
+
+  function applyLang(lang) {
+    if (!I18N[lang]) lang = 'fr';
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    const dict = I18N[lang];
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      const value = dict[key];
+      if (value === undefined) return;
+
+      const targetAttr = el.getAttribute('data-i18n-attr');
+      if (targetAttr) {
+        el.setAttribute(targetAttr, value);
+      } else if (value.indexOf('<') !== -1) {
+        el.innerHTML = value;
+      } else {
+        el.textContent = value;
+      }
+    });
+
+    // Tooltip attribute: populate data-tooltip from a separate dict key
+    document.querySelectorAll('[data-i18n-tooltip]').forEach(el => {
+      const key = el.getAttribute('data-i18n-tooltip');
+      if (dict[key] !== undefined) el.setAttribute('data-tooltip', dict[key]);
+    });
+
+    // Toggle active state on language buttons
+    document.querySelectorAll('.lang-toggle button').forEach(b => {
+      b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+    });
+
+    // Refresh dynamic strings
+    if (typeof updateRep === 'function') updateRep();
+    if (typeof render === 'function') render();
+  }
+
+  // Hook up language toggle
+  document.querySelectorAll('.lang-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.getAttribute('data-lang');
+      applyLang(lang);
+      try { localStorage.setItem('cc-calc-lang', lang); } catch(e) {}
+    });
+  });
+
+  // Lang init runs at the bottom of the script — after all functions
+  // and state are defined — to avoid temporal-dead-zone errors.
+
+
 
   // License — tiered active-user pricing
   function calculateLicense(users) {
@@ -1201,10 +1719,20 @@
 
   // Service tiers — multipliers applied to (license + infrastructure)
   // Source: Pricing MASTER Dec 22 2025 — Keycloak tab, rows 13-26 and 65-74
+  // i18n helpers for tiers (translate tier name/desc based on key)
+  function getTierName(tier) {
+    const key = `tier.${tier.key}.name`;
+    return (I18N[currentLang] && I18N[currentLang][key]) || tier.name;
+  }
+  function getTierDesc(tier) {
+    const key = `tier.${tier.key}.desc`;
+    return (I18N[currentLang] && I18N[currentLang][key]) || tier.desc;
+  }
+
   const TIERS = {
-    standard: { name: 'Standard',     desc: 'Support 9h-18h, jours ouvrés',          mult: 1.0 },
-    premium:  { name: 'Premium 24/7', desc: 'Astreinte 24/7, SLA renforcé',          mult: 1.8 },
-    hds:      { name: 'HDS',          desc: 'Hébergement données de santé 6 niveaux', mult: 1.4 }
+    standard: { key: 'standard', name: 'Standard',     desc: 'Support 9h-18h, jours ouvrés',          mult: 1.0 },
+    premium:  { key: 'premium',  name: 'Premium 24/7', desc: 'Astreinte 24/7, SLA renforcé',          mult: 1.8 },
+    hds:      { key: 'hds',      name: 'HDS',          desc: 'Hébergement données de santé 6 niveaux', mult: 1.4 }
   };
 
   // ===== State =====
@@ -1215,7 +1743,7 @@
 
   // ===== Formatting =====
   function fmt(n) {
-    return Math.round(n).toLocaleString('fr-FR');
+    return Math.round(n).toLocaleString(currentLang === 'en' ? 'en-GB' : 'fr-FR');
   }
 
   // ===== Render =====
@@ -1257,8 +1785,10 @@
     if (showExtras) {
       document.getElementById('multiplier-row').style.display = 'flex';
       document.getElementById('mult-price').textContent = fmt(multSurcharge);
-      document.getElementById('mult-label').textContent = `Coefficient ×${tier.mult} (${tier.name})`;
-      document.getElementById('mult-detail').textContent = 'Surcoût appliqué sur licence + infrastructure';
+      const coefLabel = (I18N[currentLang] && I18N[currentLang]['detail.coef']) || 'Coefficient';
+      document.getElementById('mult-label').textContent = `${coefLabel} ×${tier.mult} (${getTierName(tier)})`;
+      const surcharge = (I18N[currentLang] && I18N[currentLang]['detail.mult.applied']) || 'Surcoût appliqué sur licence + infrastructure';
+      document.getElementById('mult-detail').textContent = surcharge;
     } else {
       document.getElementById('multiplier-row').style.display = 'none';
     }
@@ -1267,26 +1797,29 @@
     document.getElementById('flat-row').style.display = 'none';
 
     // Total detail line
-    document.getElementById('total-detail').textContent = `${tier.name} — sans engagement`;
+    const noCommit = (I18N[currentLang] && I18N[currentLang]['detail.nocommit']) || '— sans engagement';
+    document.getElementById('total-detail').textContent = `${getTierName(tier)} ${noCommit}`;
 
     // License breakdown sublabel
-    let lDetail = 'Aucune licence — 100 premiers utilisateurs inclus';
+    const noneIncluded = (I18N[currentLang] && I18N[currentLang]['detail.license.none']) || 'Aucune licence — 100 premiers utilisateurs inclus';
+    const degLabel = (I18N[currentLang] && I18N[currentLang]['detail.license.deg']) || 'Dégressif :';
+    let lDetail = noneIncluded;
     if (u > 100) {
       const tiers = [];
       if (u > 100) tiers.push(`${fmt(Math.min(u-100,9900))} × 0,05€`);
       if (u > 10000) tiers.push(`${fmt(Math.min(u-10000,40000))} × 0,02€`);
       if (u > 50000) tiers.push(`${fmt(Math.min(u-50000,200000))} × 0,005€`);
       if (u > 250000) tiers.push(`${fmt(u-250000)} × 0,001€`);
-      lDetail = 'Dégressif : ' + tiers.join(' + ');
+      lDetail = degLabel + ' ' + tiers.join(' + ');
     }
     document.getElementById('license-detail').textContent = lDetail;
 
     // Print fields — keep in sync for Cmd+P direct
     document.getElementById('print-users').textContent = fmt(u);
-    document.getElementById('print-tier').textContent = tier.name;
-    document.getElementById('print-tier-desc').textContent = tier.desc;
+    document.getElementById('print-tier').textContent = getTierName(tier);
+    document.getElementById('print-tier-desc').textContent = getTierDesc(tier);
     document.getElementById('print-date').textContent =
-      new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+      new Date().toLocaleDateString(currentLang === 'en' ? 'en-GB' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 
     // Slider step — adjust resolution by volume range
     if (u < 10000) document.getElementById('users-slider').step = 500;
@@ -1338,7 +1871,8 @@
   const repSelect = document.getElementById('customer-rep');
   const printRep = document.getElementById('print-rep');
   function repLine(rep) {
-    return `${rep.name} — ${rep.title} Clever Cloud — ${rep.email}`;
+    const suffix = (I18N[currentLang] && I18N[currentLang]['rep.title.suffix']) || 'Clever Cloud';
+    return `${rep.name} — ${rep.title} ${suffix} — ${rep.email}`;
   }
   SALES_TEAM.forEach((rep, i) => {
     const opt = document.createElement('option');
@@ -1347,7 +1881,10 @@
     repSelect.appendChild(opt);
   });
   function updateRep() {
-    const rep = SALES_TEAM[parseInt(repSelect.value, 10) || 0];
+    let sel;
+    try { sel = repSelect; } catch(e) { return; }
+    if (!sel) return;
+    const rep = SALES_TEAM[parseInt(sel.value, 10) || 0];
     if (rep && printRep) printRep.textContent = repLine(rep);
   }
   repSelect.addEventListener('change', updateRep);
@@ -1395,6 +1932,15 @@
     document.getElementById('print-customer-email').textContent = document.getElementById('customer-email').value || '';
     setTimeout(() => window.print(), 100);
   });
+
+  // Restore saved language preference (defaults to FR on first visit).
+  // This runs late so render() / updateRep() / state are all initialised.
+  try {
+    const saved = localStorage.getItem('cc-calc-lang');
+    applyLang(saved && I18N[saved] ? saved : 'fr');
+  } catch(e) {
+    applyLang('fr');
+  }
 
   // Initial render
   render();
