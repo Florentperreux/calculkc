@@ -37,7 +37,10 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     font-variant-numeric: tabular-nums;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
   }
+  body { min-height: 100vh; }
   .num-tabular { font-variant-numeric: tabular-nums; }
 
   /* The signature CC gradient underline */
@@ -102,14 +105,15 @@
     background: transparent;
     border: none;
     color: var(--muted);
-    padding: 8px 12px;
+    padding: 10px 14px;
     font-family: inherit;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.15s;
     letter-spacing: 0.04em;
-    min-width: 36px;
+    min-width: 40px;
+    min-height: 40px;
   }
   .lang-toggle button + button {
     border-left: 1.5px solid var(--border-strong);
@@ -127,13 +131,15 @@
     background: transparent;
     border: 1.5px solid var(--navy);
     color: var(--navy);
-    padding: 10px 22px;
+    padding: 11px 22px;
     font-family: inherit;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.15s;
     letter-spacing: -0.005em;
+    min-height: 44px;
+    border-radius: 4px;
   }
   .mode-toggle button:hover { background: var(--navy); color: white; }
   .mode-toggle button.active {
@@ -166,6 +172,8 @@
     letter-spacing: -0.03em;
     color: var(--navy);
     margin-bottom: 18px;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
   .hero-subtitle {
     font-size: 18px;
@@ -177,6 +185,166 @@
   @media (max-width: 720px) {
     .hero-title { font-size: 38px; }
     .hero-subtitle { font-size: 15px; }
+  }
+
+  /* ===== MOBILE — under 640px (most smartphones) ===== */
+  @media (max-width: 640px) {
+    /* Header: stack into 2 rows, brand + actions wrap */
+    .header {
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 14px 18px;
+    }
+    .brand { gap: 10px; }
+    .brand-mark { width: 30px; height: 30px; }
+    .brand-text {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+    }
+    .brand-text .title { font-size: 15px; }
+    .brand-text .sep { display: none; }
+    .brand-text .subtitle { font-size: 11px; margin-top: 2px; }
+    .header-actions {
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .mode-toggle button {
+      padding: 9px 12px;
+      font-size: 11px;
+    }
+    .lang-toggle button {
+      padding: 7px 9px;
+      font-size: 10px;
+      min-width: 30px;
+    }
+
+    /* Container & cards: tighter padding */
+    .container { padding: 24px 16px 50px; }
+    .card { padding: 20px 18px; margin-bottom: 12px; }
+    .price-card { padding: 24px 20px; }
+    .hero { margin-bottom: 28px; }
+    .hero-eyebrow { font-size: 10px; letter-spacing: 0.14em; }
+
+    /* Hero title smaller */
+    .hero-title { font-size: 30px; }
+    .hero-subtitle { font-size: 14px; }
+    .underlined { background-size: 100% 4px; }
+
+    /* Eyebrows */
+    .eyebrow { font-size: 10px; margin-bottom: 14px; }
+
+    /* Users number */
+    .users-display { gap: 10px; }
+    .users-display .num { font-size: 36px; }
+    .users-display .lbl { font-size: 12px; }
+
+    /* Presets: 4 columns instead of 7 — 2 rows */
+    .presets {
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: minmax(36px, auto);
+    }
+    .preset { padding: 9px 4px; font-size: 11px; }
+
+    /* Tier cards: more space for the active marker */
+    .tier { padding: 16px 44px 16px 14px; }
+    .tier-name { font-size: 14px; }
+    .tier-desc { font-size: 12px; }
+    .tier-mult { font-size: 10px; }
+    .tier.active::after { top: 14px; right: 14px; }
+    .tier.active::before { top: 20px; right: 18px; }
+
+    /* Included items: more vertical breathing */
+    .included { gap: 12px; }
+    .included-item { font-size: 13px; }
+    .included-item .mark { width: 18px; height: 18px; font-size: 11px; }
+
+    /* Price hero */
+    .price-eyebrow { font-size: 10px; margin-bottom: 12px; }
+    .price-main { gap: 8px; flex-wrap: wrap; }
+    .price-value { font-size: 56px; }
+    .price-unit { font-size: 16px; }
+    .price-annual { font-size: 13px; }
+
+    /* Breakdown */
+    .breakdown-row { padding: 12px 0; gap: 14px; }
+    .breakdown-label { font-size: 13px; }
+    .breakdown-label .sublabel { font-size: 11px; }
+    .breakdown-value { font-size: 13px; }
+    .breakdown-row.subtotal {
+      margin: 4px -18px;
+      padding: 12px 18px;
+    }
+    .breakdown-row.total .breakdown-value { font-size: 24px; }
+
+    /* POI card */
+    .poi-card { padding: 20px 18px; }
+    .poi-content {
+      flex-direction: column;
+      gap: 14px;
+    }
+    .poi-logo { width: 44px; height: 44px; }
+    .poi-title { font-size: 18px; }
+    .poi-desc { font-size: 13px; }
+    .poi-service { font-size: 12px; }
+    .poi-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    /* Enterprise card */
+    .enterprise-card { padding: 20px 18px; }
+    .enterprise-content {
+      flex-direction: column;
+      gap: 14px;
+    }
+    .enterprise-icon { width: 38px; height: 38px; font-size: 17px; }
+    .enterprise-title { font-size: 16px; }
+    .enterprise-desc { font-size: 13px; }
+    .enterprise-features {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+    .enterprise-feature { font-size: 12.5px; }
+    .enterprise-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    /* Quote form: stack labels */
+    .quote-form { grid-template-columns: 1fr; gap: 12px; }
+    .quote-info { padding: 18px; }
+
+    /* Action buttons: side by side but smaller */
+    .actions { gap: 8px; margin-top: 20px; }
+    .btn { padding: 12px 14px; font-size: 13px; }
+
+    /* Config note: tighter */
+    .config-note { padding: 10px 12px; font-size: 11.5px; }
+
+    /* Info tag tooltip — recenter on small screens */
+    .info-tag::after {
+      width: 200px;
+      font-size: 11px;
+    }
+  }
+
+  /* ===== Small phones — under 400px ===== */
+  @media (max-width: 400px) {
+    .hero-title { font-size: 26px; }
+    .price-value { font-size: 44px; }
+    .users-display .num { font-size: 30px; }
+    .header { padding: 12px 14px; }
+    .container { padding: 20px 12px 40px; }
+    .card { padding: 18px 14px; }
+    .presets { grid-template-columns: repeat(3, 1fr); }
+    .actions { flex-direction: column; }
+    .actions .btn { width: 100%; }
   }
 
   .layout {
@@ -291,7 +459,9 @@
     z-index: 10;
   }
   .info-tag:hover::after,
-  .info-tag:hover::before {
+  .info-tag:hover::before,
+  .info-tag.is-open::after,
+  .info-tag.is-open::before {
     opacity: 1;
     visibility: visible;
   }
@@ -316,31 +486,33 @@
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    height: 4px;
+    height: 6px;
     background: var(--border);
     outline: none;
-    margin: 12px 0 12px;
+    margin: 16px 0 14px;
     border-radius: 4px;
+    cursor: pointer;
+    touch-action: pan-y;
   }
   input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 22px;
-    height: 22px;
+    width: 28px;
+    height: 28px;
     background: var(--navy);
     cursor: pointer;
-    border: 4px solid var(--bg-card);
+    border: 5px solid var(--bg-card);
     border-radius: 50%;
-    box-shadow: 0 0 0 1px var(--navy);
+    box-shadow: 0 0 0 1px var(--navy), 0 2px 8px rgba(31, 34, 64, 0.2);
   }
   input[type="range"]::-moz-range-thumb {
-    width: 22px;
-    height: 22px;
+    width: 28px;
+    height: 28px;
     background: var(--navy);
     cursor: pointer;
-    border: 4px solid var(--bg-card);
+    border: 5px solid var(--bg-card);
     border-radius: 50%;
-    box-shadow: 0 0 0 1px var(--navy);
+    box-shadow: 0 0 0 1px var(--navy), 0 2px 8px rgba(31, 34, 64, 0.2);
   }
 
   /* ===== PRESETS ===== */
@@ -351,7 +523,7 @@
     margin-top: 12px;
   }
   .preset {
-    padding: 10px 4px;
+    padding: 12px 4px;
     background: var(--bg);
     border: 1px solid var(--border);
     font-size: 12px;
@@ -361,8 +533,12 @@
     transition: all 0.12s;
     text-align: center;
     border-radius: 4px;
+    min-height: 40px;
+    -webkit-tap-highlight-color: transparent;
   }
-  .preset:hover { border-color: var(--navy); color: var(--navy); background: white; }
+  @media (hover: hover) {
+    .preset:hover { border-color: var(--navy); color: var(--navy); background: white; }
+  }
   .preset.active {
     background: var(--navy);
     color: white;
@@ -371,17 +547,20 @@
 
   .number-input {
     width: 100%;
-    padding: 11px 14px;
+    padding: 13px 14px;
     border: 1px solid var(--border);
     background: var(--bg);
     font-family: inherit;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     text-align: right;
     color: var(--navy);
-    margin-top: 12px;
+    margin-top: 14px;
     border-radius: 4px;
     transition: all 0.15s;
+    -webkit-appearance: none;
+    appearance: none;
+    min-height: 44px;
   }
   .number-input:focus {
     outline: none;
@@ -403,10 +582,13 @@
     transition: all 0.15s;
     border-radius: 6px;
     position: relative;
+    -webkit-tap-highlight-color: transparent;
   }
-  .tier:hover {
-    border-color: var(--navy-soft);
-    background: white;
+  @media (hover: hover) {
+    .tier:hover {
+      border-color: var(--navy-soft);
+      background: white;
+    }
   }
   .tier.active {
     border-color: var(--navy);
@@ -486,6 +668,8 @@
     background-size: 100% 8px;
     background-position: 0 100%;
     padding-bottom: 4px;
+    overflow-wrap: break-word;
+    word-break: keep-all;
   }
   .price-unit {
     font-size: 22px;
@@ -500,9 +684,6 @@
   .price-annual .amount {
     color: var(--navy);
     font-weight: 700;
-  }
-  @media (max-width: 720px) {
-    .price-value { font-size: 60px; }
   }
 
   /* ===== BREAKDOWN ===== */
@@ -756,9 +937,6 @@
     gap: 8px;
   }
   .enterprise-footer strong { color: var(--navy); font-weight: 700; }
-  @media (max-width: 640px) {
-    .enterprise-features { grid-template-columns: 1fr; }
-  }
 
   /* ===== ACTIONS ===== */
   .actions {
@@ -778,6 +956,8 @@
     letter-spacing: -0.005em;
     text-align: center;
     border-radius: 4px;
+    min-height: 48px;
+    -webkit-tap-highlight-color: transparent;
   }
   .btn-primary {
     background: var(--navy);
@@ -829,14 +1009,17 @@
   }
   .quote-form input {
     width: 100%;
-    padding: 11px 14px;
+    padding: 12px 14px;
     border: 1px solid var(--border);
     background: var(--bg);
     font-family: inherit;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--navy);
     border-radius: 4px;
     transition: all 0.15s;
+    -webkit-appearance: none;
+    appearance: none;
+    min-height: 44px;
   }
   .quote-form input:focus {
     outline: none;
@@ -845,7 +1028,7 @@
   }
   .select-input {
     width: 100%;
-    padding: 11px 38px 11px 14px;
+    padding: 12px 38px 12px 14px;
     border: 1px solid var(--border);
     background-color: var(--bg);
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231F2240' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
@@ -853,7 +1036,7 @@
     background-position: right 12px center;
     background-size: 16px;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     color: var(--navy);
     border-radius: 4px;
@@ -862,6 +1045,7 @@
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
+    min-height: 44px;
   }
   .select-input:focus {
     outline: none;
@@ -1210,7 +1394,7 @@
           <div class="preset" data-val="500000">500k</div>
           <div class="preset" data-val="2000000">2M</div>
         </div>
-        <input type="number" id="users-input" class="number-input" value="100000" min="0">
+        <input type="number" id="users-input" class="number-input" value="100000" min="0" inputmode="numeric">
         <div class="config-note" data-i18n="config.note">
           <strong>Utilisateur actif</strong> = compte ayant effectué au moins une connexion dans le mois. Les comptes dormants ne sont pas facturés.
         </div>
@@ -1682,6 +1866,22 @@
       applyLang(lang);
       try { localStorage.setItem('cc-calc-lang', lang); } catch(e) {}
     });
+  });
+
+  // Tooltip: hover on desktop, tap-to-toggle on touch devices
+  document.querySelectorAll('.info-tag').forEach(tag => {
+    tag.addEventListener('click', (e) => {
+      e.stopPropagation();
+      // Close any other open tooltips
+      document.querySelectorAll('.info-tag.is-open').forEach(t => {
+        if (t !== tag) t.classList.remove('is-open');
+      });
+      tag.classList.toggle('is-open');
+    });
+  });
+  // Close tooltips on tap outside
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.info-tag.is-open').forEach(t => t.classList.remove('is-open'));
   });
 
   // Lang init runs at the bottom of the script — after all functions
